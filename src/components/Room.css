@@ -1,0 +1,62 @@
+.room-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #2c2c2c;
+}
+
+.card-text {
+  margin-bottom: 1.5rem;
+}
+
+.card-text div {
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.card-text strong {
+  color: #2c2c2c;
+  margin-right: 0.5rem;
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .card-img {
+    height: 150px;
+  }
+} 

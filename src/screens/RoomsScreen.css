@@ -1,0 +1,133 @@
+.hero-carousel {
+  margin-bottom: 0;
+}
+
+.hero-carousel .carousel-image {
+  height: 80vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-carousel .carousel-caption {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-carousel .carousel-caption h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-carousel .carousel-caption p {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
+/* Carousel Controls */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+  opacity: 0.8;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 20px;
+}
+
+.carousel-indicators {
+  margin-bottom: 2rem;
+}
+
+.carousel-indicators button {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: #ffc107 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-carousel .carousel-image {
+    
+    height: 60vh;
+  }
+
+  .hero-carousel .carousel-caption h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-carousel .carousel-caption p {
+    font-size: 1.1rem;
+  }
+}
+
+/* Section Header */
+.section-header {
+  padding: 2rem 0;
+}
+
+.section-header h2 {
+  color: #2c2c2c;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.header-line {
+  width: 80px;
+  height: 3px;
+  background-color: #ffc107;
+  margin: 1rem auto;
+}
+
+.section-header .lead {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-section {
+  height: 60vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+} 

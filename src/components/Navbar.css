@@ -1,0 +1,217 @@
+.navbar {
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  min-height: 80px;
+  width: 100%;
+  background-color: #343a40 !important;
+}
+
+.navbar-logo {
+  height: 50px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.brand-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link-custom {
+  position: relative;
+  color: #fff !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  font-weight: 500;
+  margin: 0 0.5rem;
+}
+
+.nav-link-custom:hover {
+  color: #ffc107 !important;
+}
+
+.nav-link-custom::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #ffc107;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link-custom:hover::after {
+  width: 70%;
+}
+
+.active-link {
+  color: #ffc107 !important;
+  font-weight: 600;
+}
+
+.active-link::after {
+  width: 70%;
+}
+
+/* Dropdown styles */
+.dropdown-menu {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1.5rem;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+  border-top: 1px solid #eee;
+}
+
+/* Account icon and text */
+#basic-nav-dropdown {
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#basic-nav-dropdown:hover {
+  color: #ffc107 !important;
+}
+
+/* Show dropdown on hover */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.navbar .container-fluid {
+  padding: 0;
+  max-width: 100%;
+}
+
+.navbar-nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 2rem;
+}
+
+.terms-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.terms-content h4 {
+  color: #343a40;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.terms-content p {
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+/* Custom scrollbar for terms content */
+.terms-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terms-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.terms-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.terms-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Book Now Button */
+.book-now-btn {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+  padding: 0.5rem 1.5rem !important;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.book-now-btn:hover {
+  background-color: #ffcd39 !important;
+  transform: translateY(-2px);
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+  .navbar {
+    min-height: 70px;
+  }
+
+  .navbar-logo {
+    height: 40px;
+    width: 60px;
+  }
+
+  .brand-text {
+    font-size: 1.2rem;
+  }
+
+  .navbar-collapse {
+    background-color: #343a40;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+  }
+
+  .nav-link-custom {
+    padding: 0.5rem 0 !important;
+  }
+
+  .book-now-btn {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .dropdown-menu {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .dropdown-item {
+    color: #fff;
+  }
+
+  .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffc107;
+  }
+
+  .dropdown-divider {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+} 
