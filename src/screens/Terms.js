@@ -5,16 +5,20 @@ import './Terms.css';
 const Terms = () => {
   return (
     <div className="terms-page">
-      {/* Hero Section */}
-      <div className="terms-hero">
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <h1>Terms & Conditions</h1>
-          <p>Please read our terms carefully before using our services</p>
-        </div>
+      <div className="hero-section" style={{
+        backgroundImage: `url('https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}>
+        <div className="overlay"></div>
+        <Container className="hero-content text-center text-white">
+          <h1 className="display-4">Terms & Conditions</h1>
+          <p className="lead">Please read our terms and conditions carefully</p>
+        </Container>
       </div>
 
-      <Container>
+      <Container className="terms-container">
         <Row>
           <Col lg={10} className="mx-auto">
             <div className="terms-content">

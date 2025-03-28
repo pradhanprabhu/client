@@ -88,15 +88,24 @@ const RoomDetailsModal = ({ show, handleClose, room }) => {
           <h4 className="mt-4">Description</h4>
           <p>{room.description}</p>
 
-          {room.facilities && room.facilities.length > 0 && (
+          {room.facilities && (
             <>
-              <h4 className="mt-4">Facilities</h4>
+              <h4 className="mt-4">Room Amenities</h4>
               <div className="facilities-grid">
-                {room.facilities.map((facility, idx) => (
-                  <div key={idx} className="facility-item">
-                    <i className={`fas ${getFacilityIcon(facility)}`}></i> {facility}
-                  </div>
-                ))}
+                {typeof room.facilities === 'string' 
+                  ? room.facilities.split(/[,\s]+/).filter(f => f.trim()).map((facility, idx) => (
+                      <div key={idx} className="facility-item">
+                        <i className={`fas ${getFacilityIcon(facility.trim())}`}></i>
+                        <span>{facility.trim()}</span>
+                      </div>
+                    ))
+                  : room.facilities.map((facility, idx) => (
+                      <div key={idx} className="facility-item">
+                        <i className={`fas ${getFacilityIcon(facility.trim())}`}></i>
+                        <span>{facility.trim()}</span>
+                      </div>
+                    ))
+                }
               </div>
             </>
           )}

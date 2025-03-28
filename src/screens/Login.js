@@ -1,46 +1,59 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
+import axios from 'axios';
 
 const Login = () => {
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    rememberMe: false
+    rememberMe: false,
   });
+
   const [message, setMessage] = useState({ text: '', type: '' });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [id]: type === 'checkbox' ? checked : value
+      [id]: type === 'checkbox' ? checked : value,
     }));
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // TODO: Implement login logic here
-      console.log('Login data:', formData);
-    } catch (error) {
-      setMessage({
-        text: error.message || 'Login failed',
-        type: 'error'
-      });
-    }
-  };
+    e.preventDefault(); // Prevent default form submission
+    setLoading(true);
+    setMessage({ text: '', type: '' });
 
-  const handleGoogleSignIn = async () => {
     try {
-      // TODO: Implement Google Sign-in logic here
-      console.log('Google Sign-in clicked');
-    } catch (error) {
-      setMessage({
-        text: error.message || 'Google Sign-in failed',
-        type: 'error'
+      const response = await axios.post('http://localhost:5000/api/users/login', {
+        email: formData.email,
+        password: formData.password,
       });
+
+      if (response.status === 200) {
+        setMessage({ text: 'Login successful!', type: 'success' });
+
+        // Store user info in localStorage
+        localStorage.setItem('userInfo', JSON.stringify(response.data.data));
+        if (formData.rememberMe) {
+          localStorage.setItem('userEmail', formData.email);
+        } else {
+          localStorage.removeItem('userEmail');
+        }
+
+        // Redirect user to home page
+        setTimeout(() => navigate('/'), 1500);
+      } else {
+        setMessage({ text: response.data.message || 'Login failed', type: 'error' });
+      }
+    } catch (error) {
+      setMessage({ text: error.response?.data?.message || 'Invalid credentials', type: 'error' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,7 +93,7 @@ const Login = () => {
                 type="email"
                 id="email"
                 className="form-control"
-                placeholder="Enter your mail"
+                placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -88,20 +101,20 @@ const Login = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Enter your Password<span className="required">*</span></label>
+              <label htmlFor="password">Password<span className="required">*</span></label>
               <input
                 type="password"
                 id="password"
                 className="form-control"
-                placeholder="Password"
+                placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
             </div>
 
-            <button type="submit" className="submit-btn">
-              Sign In
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? 'Signing In...' : 'Sign In'}
             </button>
 
             <div className="form-options">
@@ -129,4 +142,5 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;
+

@@ -13,6 +13,7 @@ import ForgotPassword from './screens/ForgotPassword';
 import RoomsScreen from './screens/RoomsScreen';
 import Terms from './screens/Terms';
 import PlacesScreen from './screens/PlacesScreen';
+import Profile from './screens/Profile';
 
 // Component to handle conditional footer rendering
 const AppContent = () => {
@@ -38,6 +39,7 @@ const AppContent = () => {
           <Route path="/rooms" element={<RoomsScreen />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/places" element={<PlacesScreen />} />
+          <Route path="/profile" element={<Profile />} />
           {/* Redirect unknown routes to Home */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

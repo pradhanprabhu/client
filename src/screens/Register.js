@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,16 +32,44 @@ const Register = () => {
       return;
     }
     try {
-      // TODO: Implement registration logic here
-      console.log('Registration data:', formData);
+      const response = await fetch('http://localhost:5000/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+          createdAt: new Date().toISOString()
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setMessage({
+          text: `Registration successful! You joined on ${new Date().toLocaleDateString()}`,
+          type: 'success',
+        });
+        // Redirect to login page after 2 seconds
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      } else {
+        setMessage({
+          text: data.message || 'Registration failed',
+          type: 'error',
+        });
+      }
     } catch (error) {
       setMessage({
         text: error.message || 'Registration failed',
-        type: 'error'
+        type: 'error',
       });
     }
   };
-
   const handleGoogleSignIn = async () => {
     try {
       // TODO: Implement Google Sign-in logic here

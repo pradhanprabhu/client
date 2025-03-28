@@ -1,10 +1,26 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Navbar as BootstrapNavbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import '../components/Navbar.css';
 
 function Navbar() {
-  const location = useLocation(); // Get the current path
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    // Get user info from localStorage when component mounts
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userInfo');
+    setUserInfo(null);
+    navigate('/login');
+  };
 
   // Function to check if a link is active
   const isActive = (path) => location.pathname === path;
@@ -66,18 +82,42 @@ function Navbar() {
               >
                 Terms & Conditions
               </Nav.Link>
-              <NavDropdown 
-                title={<span className="nav-link-custom">👤 Account</span>} 
-                id="basic-nav-dropdown"
-                align="end"
-              >
-                <NavDropdown.Item as={Link} to="/login" className="dropdown-item">
-                  Login
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/register" className="dropdown-item">
-                  Register
-                </NavDropdown.Item>
-              </NavDropdown>
+              {userInfo ? (
+                <NavDropdown 
+                  title={
+                    <span className="nav-link-custom">
+                      <i className="fas fa-user-circle me-1"></i>
+                      {userInfo.name}
+                    </span>
+                  } 
+                  id="basic-nav-dropdown"
+                  align="end"
+                >
+                  <NavDropdown.Item as={Link} to="/profile" className="dropdown-item">
+                    <i className="fas fa-user me-2"></i>Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/bookings" className="dropdown-item">
+                    <i className="fas fa-calendar-alt me-2"></i>My Bookings
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={handleLogout} className="dropdown-item">
+                    <i className="fas fa-sign-out-alt me-2"></i>Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <NavDropdown 
+                  title={<span className="nav-link-custom">👤 Account</span>} 
+                  id="basic-nav-dropdown"
+                  align="end"
+                >
+                  <NavDropdown.Item as={Link} to="/login" className="dropdown-item">
+                    Login
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/register" className="dropdown-item">
+                    Register
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
             </Nav>
           </BootstrapNavbar.Collapse>
         </Container>

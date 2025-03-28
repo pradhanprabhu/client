@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 import './SignupScreen.css';
 
+
 const SignupScreen = () => {
   const navigate = useNavigate();
   const [showTerms, setShowTerms] = useState(false);
