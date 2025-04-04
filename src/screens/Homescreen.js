@@ -6,26 +6,20 @@ import './Homescreen.css';
 const Homescreen = () => {
   const carouselItems = [
     {
-      image: 'https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-20T08%3A04%3A05Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=AKQ5LFPtLLwO2mpE6RJnn6d349Iepp70QKS7tyz4Mao%3D',
+      image: 'https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D',
       title: 'Welcome to Nepalese Hotel',
-      description: 'Experience luxury and comfort in the heart of Nepal',
-      link: '/rooms',
-      buttonText: 'BOOK NOW'
+      description: 'Experience luxury and comfort in the heart of Nepal'
     },
     {
-      image: 'https://files.oaiusercontent.com/file-KDctLJCuigk9caBHN8cde7?se=2025-03-20T08%3A04%3A05Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D8d678e64-1a3f-48ce-9483-260116994e75.webp&sig=bVxU8PtxlGiio56mefpiEScDsLSYFrTenKxMusEX%2BoE%3D',
-      title: 'Luxurious Rooms & Suites',
-      description: 'Discover our elegant rooms with modern amenities',
-      link: '/rooms',
-      buttonText: 'VIEW ROOMS'
+      image: 'https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D',
+      title: 'Luxurious Accommodations',
+      description: 'Choose from our selection of premium rooms and suites'
     },
     {
-      image: '',
-      title: 'Explore Beautiful Nepal',
-      description: 'Discover the most beautiful destinations in Nepal',
-      link: '/places',
-      buttonText: 'EXPLORE PLACES'
-    },
+      image: 'https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D',
+      title: 'Explore Nepal',
+      description: 'Discover the beauty and culture of Nepal'
+    }
   ];
 
   return (
@@ -33,20 +27,17 @@ const Homescreen = () => {
       <Carousel className="hero-carousel" controls indicators interval={5000} pause={false}>
         {carouselItems.map((item, index) => (
           <Carousel.Item key={index}>
-            <div 
+            <div
               className="carousel-image"
               style={{ backgroundImage: `url(${item.image})` }}
-            >
-              <div className="carousel-caption">
-                <h1>{item.title}</h1>
-                <p>{item.description}</p>
-                <Link to={item.link}>
-                  <Button variant="warning" size="lg">
-                    {item.buttonText}
-                  </Button>
-                </Link>
-              </div>
-            </div>
+            />
+            <Carousel.Caption>
+              <h1>{item.title}</h1>
+              <p>{item.description}</p>
+              <Link to="/rooms">
+                <Button variant="warning" size="lg">View Rooms</Button>
+              </Link>
+            </Carousel.Caption>
           </Carousel.Item>
         ))}
       </Carousel>
@@ -87,36 +78,32 @@ const Homescreen = () => {
       </section>
 
       {/* About Section */}
-      <section className="about-section py-5 bg-light">
+      <section className="py-5 bg-light">
         <Container>
           <Row className="align-items-center">
-            <Col md={6}>
-              <img
-                src="https://files.oaiusercontent.com/file-KDctLJCuigk9caBHN8cde7?se=2025-03-19T05%3A58%3A24Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D8d678e64-1a3f-48ce-9483-260116994e75.webp&sig=48C1a%2Bf2fNbkrWkrp2P5I85wJfzVHQw1kbXKyfYAXX4%3D"
-                alt="Hotel Exterior"
-                className="img-fluid rounded"
-              />
+            <Col md={6} className="mb-4 mb-md-0">
+              <h2>About Nepalese Hotel</h2>
+              <p>
+                Experience the perfect blend of traditional Nepalese hospitality and modern luxury at our hotel.
+                Located in the heart of Nepal, we offer stunning views, world-class amenities, and unforgettable experiences.
+              </p>
+              <Link to="/aboutus">
+                <Button variant="outline-warning">Learn More</Button>
+              </Link>
             </Col>
             <Col md={6}>
-              <h2>About Our Hotel</h2>
-              <p className="lead">
-                Experience the perfect blend of traditional Nepalese hospitality and modern luxury.
-              </p>
-              <p>
-                Located in the heart of Nepal, our hotel offers a unique experience that combines
-                comfort, culture, and exceptional service. With stunning views and world-class
-                amenities, we ensure your stay is nothing short of extraordinary.
-              </p>
-              <Link to="/aboutus" className="btn btn-outline-primary">
-                Learn More
-              </Link>
+              <img
+                src="https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D"
+                alt="Hotel"
+                className="img-fluid rounded"
+              />
             </Col>
           </Row>
         </Container>
       </section>
     </div>
   );
-}
+};
 
 export default Homescreen;
 

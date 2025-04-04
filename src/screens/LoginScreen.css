@@ -1,16 +1,16 @@
-.register-screen {
+.login-screen {
   background-color: #f8f9fa;
   min-height: 100vh;
 }
 
-.register-card {
+.login-card {
   background: white;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.register-card h2 {
+.login-card h2 {
   color: #333;
   font-weight: 600;
 }
@@ -41,7 +41,7 @@
 }
 
 @media (max-width: 768px) {
-  .register-card {
+  .login-card {
     padding: 1.5rem;
   }
-} 
+}

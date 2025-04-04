@@ -9,12 +9,32 @@ function Navbar() {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    // Get user info from localStorage when component mounts
-    const storedUserInfo = localStorage.getItem('userInfo');
-    if (storedUserInfo) {
-      setUserInfo(JSON.parse(storedUserInfo));
-    }
-  }, []);
+    const loadUserInfo = () => {
+      const storedUserInfo = localStorage.getItem('userInfo');
+      if (storedUserInfo) {
+        try {
+          const parsedUserInfo = JSON.parse(storedUserInfo);
+          console.log('Loaded user info:', parsedUserInfo); // Debug log
+          setUserInfo(parsedUserInfo);
+        } catch (error) {
+          console.error('Error parsing user info:', error);
+          localStorage.removeItem('userInfo');
+          setUserInfo(null);
+        }
+      }
+    };
+
+    // Load user info initially
+    loadUserInfo();
+
+    // Add event listener for storage changes
+    window.addEventListener('storage', loadUserInfo);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('storage', loadUserInfo);
+    };
+  }, [location]); // Add location as dependency to update when route changes
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
@@ -82,17 +102,30 @@ function Navbar() {
               >
                 Terms & Conditions
               </Nav.Link>
-              {userInfo ? (
+              {userInfo && userInfo.name ? (
                 <NavDropdown 
                   title={
-                    <span className="nav-link-custom">
-                      <i className="fas fa-user-circle me-1"></i>
+                    <span className="nav-link-custom d-flex align-items-center">
+                      <i className="fas fa-user-circle me-2"></i>
                       {userInfo.name}
                     </span>
                   } 
                   id="basic-nav-dropdown"
                   align="end"
                 >
+                  <div className="dropdown-header">
+                    <div className="user-info">
+                      <i className="fas fa-user-circle fa-2x mb-2"></i>
+                      <div className="user-details">
+                        <div className="user-name">{userInfo.name}</div>
+                        <div className="user-email">{userInfo.email}</div>
+                        {userInfo.phone && (
+                          <div className="user-phone">{userInfo.phone}</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <NavDropdown.Divider />
                   <NavDropdown.Item as={Link} to="/profile" className="dropdown-item">
                     <i className="fas fa-user me-2"></i>Profile
                   </NavDropdown.Item>

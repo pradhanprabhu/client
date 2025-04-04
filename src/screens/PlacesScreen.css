@@ -41,6 +41,34 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+/* Filter Styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #2c2c2c;
+  margin-bottom: 0.5rem;
+}
+
+.form-select {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  background-color: #fff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.form-select:hover {
+  border-color: #ffc107;
+}
+
 /* Places Cards */
 .place-card {
   background: white;
@@ -165,6 +193,10 @@
 
   .hero-content .lead {
     font-size: 1.3rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
   }
 
   .place-image {

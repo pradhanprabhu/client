@@ -2,108 +2,102 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
 import './LoginScreen.css';
 
-const LoginScreen = () => {
+function LoginScreen() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
+    setError('');
+    setSuccess('');
 
     try {
-      const response = await axios.post('/api/users/login', formData);
+      const { data } = await axios.post('/api/users/login', {
+        email,
+        password
+      });
 
-      if (response.data.success) {
-        // Store user data and token in localStorage
-        localStorage.setItem('userInfo', JSON.stringify(response.data));
-        // Redirect to home page
-        navigate('/');
+      if (data.success) {
+        localStorage.setItem('userInfo', JSON.stringify(data.data));
+        setSuccess('Login successful!');
+        setTimeout(() => {
+          navigate('/');
+        }, 1500);
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed');
+      setError(error.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-hero">
-        <div className="login-hero-content">
-          <h1>Welcome Back</h1>
-          <p>Login to your account and continue your journey</p>
-        </div>
-      </div>
-
-      <Container className="login-container">
-        <Row className="justify-content-center">
-          <Col md={6}>
-            <Card className="login-card">
-              <Card.Body>
+    <>
+      <Navbar />
+      <div className="login-screen">
+        <Container>
+          <Row className="justify-content-center align-items-center min-vh-100">
+            <Col md={6} lg={5}>
+              <div className="login-card">
+                <h2 className="text-center mb-4">Login</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
+                {success && <Alert variant="success">{success}</Alert>}
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>Email address</Form.Label>
                     <Form.Control
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
+                      placeholder="Enter email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </Form.Group>
 
-                  <Form.Group className="mb-3">
+                  <Form.Group className="mb-4">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       type="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
+                      placeholder="Enter password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       required
                     />
                   </Form.Group>
 
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className="w-100"
+                  <Button 
+                    variant="primary" 
+                    type="submit" 
+                    className="w-100 mb-3"
                     disabled={loading}
                   >
                     {loading ? 'Logging in...' : 'Login'}
                   </Button>
-                </Form>
 
-                <div className="mt-3 text-center">
-                  <p>
-                    Don't have an account?{' '}
-                    <Link to="/register" className="register-link">
-                      Register here
-                    </Link>
-                  </p>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+                  <div className="text-center">
+                    <p className="mb-0">
+                      Don't have an account?{' '}
+                      <Link to="/register" className="text-primary">
+                        Register here
+                      </Link>
+                    </p>
+                  </div>
+                </Form>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </>
   );
-};
+}
 
 export default LoginScreen; 

@@ -7,13 +7,21 @@ import Footer from "./components/Footer";
 import Homescreen from "./screens/Homescreen";
 import AboutUs from './screens/AboutUs';
 import ContactUs from './screens/ContactUs';
-import Login from './screens/Login';
-import Register from './screens/Register';
 import ForgotPassword from './screens/ForgotPassword';
 import RoomsScreen from './screens/RoomsScreen';
 import Terms from './screens/Terms';
 import PlacesScreen from './screens/PlacesScreen';
-import Profile from './screens/Profile';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import BookingScreen from './screens/BookingScreen';
+import BookingConfirmationScreen from './screens/BookingConfirmationScreen';
+import PaymentScreen from './screens/PaymentScreen';
+import AdminDashboard from "./screens/AdminDashboard";
+import './App.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // Component to handle conditional footer rendering
 const AppContent = () => {
@@ -33,13 +41,17 @@ const AppContent = () => {
           <Route path="/home" element={<Homescreen />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/register" element={<RegisterScreen />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/rooms" element={<RoomsScreen />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/places" element={<PlacesScreen />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfileScreen />} />
+          <Route path="/book/:roomId" element={<BookingScreen />} />
+          <Route path="/booking-confirmation" element={<BookingConfirmationScreen />} />
+          <Route path="/payment" element={<PaymentScreen />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           {/* Redirect unknown routes to Home */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
@@ -54,6 +66,17 @@ const App = () => {
     <SSRProvider>
       <ThemeProvider>
         <BrowserRouter>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <AppContent />
         </BrowserRouter>
       </ThemeProvider>

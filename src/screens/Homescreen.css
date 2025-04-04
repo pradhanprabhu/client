@@ -1,3 +1,7 @@
+.home-screen {
+  min-height: 100vh;
+}
+
 .hero-section {
   height: 100vh;
   background: url('https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D') center/cover no-repeat;
@@ -164,7 +168,53 @@
   margin-bottom: 2rem;
 }
 
+/* Wireframe Section */
+.wireframe-section {
+  background-color: #fff;
+}
+
+.wireframe-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  height: 100%;
+}
+
+.wireframe-card:hover {
+  transform: translateY(-5px);
+}
+
+.wireframe-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #ffc107;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 auto 1.5rem;
+}
+
+.wireframe-card .card-title {
+  text-align: center;
+  color: #2c2c2c;
+  margin-bottom: 1rem;
+}
+
+.wireframe-card .card-text {
+  text-align: center;
+  color: #6c757d;
+}
+
 /* Features Section */
+.features-section {
+  background-color: #f8f9fa;
+}
+
 .feature-item {
   padding: 2rem;
   transition: transform 0.3s ease;
@@ -627,6 +677,10 @@
 
   .hero-content p {
     font-size: 1.2rem;
+  }
+
+  .wireframe-card {
+    margin-bottom: 2rem;
   }
 
   .feature-item {

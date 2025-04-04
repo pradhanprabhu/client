@@ -154,10 +154,10 @@ function AboutUs() {
               <Card className="team-card">
                 <Card.Img 
                   variant="top" 
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                  src="https://scontent.fktm17-1.fna.fbcdn.net/v/t39.30808-6/481670689_2081867788948222_2613998384074175959_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=v9dq5_j6x0QQ7kNvgGcQY7B&_nc_oc=AdlN0BBDxCPju6ngfmKuq-TSI4c472Io-7SgC0D6i3O6kJnuMJiHwyVBp0CDqyYr9SSy96dlnos0TV6LboRJ9fM1&_nc_zt=23&_nc_ht=scontent.fktm17-1.fna&_nc_gid=VIecbSTbQvqLjvncJLpNIA&oh=00_AYG4xK9LcLBT2DLL_3tdPSV3QXUq6jjrE-Yqi-lfwpCCyw&oe=67EEF47E"
                 />
                 <Card.Body className="text-center">
-                  <h4>Rajesh Sharma</h4>
+                  <h4>Prabhu Pradhan</h4>
                   <p className="text-muted">Managing Director</p>
                 </Card.Body>
               </Card>
@@ -166,10 +166,10 @@ function AboutUs() {
               <Card className="team-card">
                 <Card.Img 
                   variant="top" 
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                  src="https://scontent.fktm17-1.fna.fbcdn.net/v/t39.30808-6/481776596_1385647846143454_5906989994570467601_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=j6CX-Me2ph0Q7kNvgFqrpUn&_nc_oc=AdmDHkALKVmnF33gNJIS8_PB7Pm89X7h2qaPndFpsD7TuTGZLR0-y6J4Pudu7aQX4fbv2Z2xJnN4OvEpUZNVs4Cv&_nc_zt=23&_nc_ht=scontent.fktm17-1.fna&_nc_gid=rAyAcsbjrHvKeReq8j0TQA&oh=00_AYFJQTukcXcaxpyAXA1k9bNiclMu39kuMEvI-_GtElEXHw&oe=67EEF4C6"
                 />
                 <Card.Body className="text-center">
-                  <h4>Priya Sharma</h4>
+                  <h4>Gita Pradhan</h4>
                   <p className="text-muted">Operations Director</p>
                 </Card.Body>
               </Card>
@@ -178,10 +178,10 @@ function AboutUs() {
               <Card className="team-card">
                 <Card.Img 
                   variant="top" 
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                  src="https://scontent.fktm17-1.fna.fbcdn.net/v/t1.6435-9/69884353_2649344891783102_7355625986869690368_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=n2Lbqk9MSQ8Q7kNvgG1mrJB&_nc_oc=AdnxvfxuaWPxCXVaHMNMhd9oBymT8JoNo4SdlTK8nXbYePnNvXNxXr8ECYNyO3dEdkanUZX9YvxTaAhrWoZ67Il3&_nc_zt=23&_nc_ht=scontent.fktm17-1.fna&_nc_gid=Cy3TFNkJWEgnhi0RMhhYug&oh=00_AYHkK_meezYepC3bkO0cQplQFAridTSERgZgEzCZV5BR-Q&oe=6810705D"
                 />
                 <Card.Body className="text-center">
-                  <h4>Arun Kumar</h4>
+                  <h4>Bimal Pradhan</h4>
                   <p className="text-muted">Guest Relations Manager</p>
                 </Card.Body>
               </Card>

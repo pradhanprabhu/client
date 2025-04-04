@@ -1,0 +1,98 @@
+.booking-confirmation-screen {
+  min-height: calc(100vh - 70px);
+  background-color: #f8f9fa;
+  padding: 2rem 0;
+}
+
+.booking-form-card,
+.booking-summary-card {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.booking-form-card .card-header,
+.booking-summary-card .card-header {
+  padding: 1rem;
+  border-bottom: none;
+}
+
+.booking-form-card .card-body,
+.booking-summary-card .card-body {
+  padding: 1.5rem;
+}
+
+.room-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.room-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.booking-details {
+  margin-top: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item.total {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #eee;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.alert {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .booking-confirmation-screen {
+    padding: 1rem 0;
+  }
+
+  .booking-form-card,
+  .booking-summary-card {
+    margin-bottom: 1rem;
+  }
+
+  .room-image {
+    height: 150px;
+  }
+} 

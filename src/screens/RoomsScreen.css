@@ -93,19 +93,20 @@
   margin: 0 auto;
 }
 
+.rooms-screen {
+  min-height: 100vh;
+}
+
+/* Hero Section */
 .hero-section {
-  height: 60vh;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 2rem;
 }
 
-.hero-section::before {
-  content: '';
+.hero-section .overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -117,17 +118,220 @@
 .hero-content {
   position: relative;
   z-index: 1;
+  padding: 2rem;
 }
 
-.hero-title {
-  font-size: 3.5rem;
+.hero-content h1 {
+  font-size: 4rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.hero-subtitle {
+.hero-content .lead {
+  font-size: 1.8rem;
+  font-weight: 300;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Room Cards */
+.room-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.room-image {
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.type-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2c2c2c;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 193, 7, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2c2c2c;
+}
+
+.room-content {
+  padding: 1.5rem;
+}
+
+.room-content h3 {
   font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #2c2c2c;
+}
+
+.room-content .price {
+  color: #ffc107;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.room-content .price i {
+  margin-right: 0.5rem;
+}
+
+.room-content .description {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.room-content .btn-outline-primary {
+  color: #ffc107;
+  border-color: #ffc107;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.room-content .btn-outline-primary:hover {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #2c2c2c;
+  transform: translateY(-2px);
+}
+
+/* Room Details Modal */
+.room-details {
+  padding: 1rem;
+}
+
+.room-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
   margin-bottom: 2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.room-detail-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+}
+
+.room-details-content .detail-item {
+  margin-bottom: 1.5rem;
+}
+
+.room-details-content h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2c2c2c;
+}
+
+.room-details-content p {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+.room-details-content ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.room-details-content li {
+  background: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Search and Filters */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #2c2c2c;
+  margin-bottom: 0.5rem;
+}
+
+.form-select {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  background-color: #fff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.form-select:hover {
+  border-color: #ffc107;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 40vh;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-content .lead {
+    font-size: 1.3rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .room-image {
+    height: 200px;
+  }
+
+  .room-content {
+    padding: 1rem;
+  }
+
+  .room-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .room-detail-image {
+    height: 150px;
+  }
 } 

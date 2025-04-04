@@ -23,41 +23,29 @@
 
 .nav-link-custom {
   position: relative;
-  color: #fff !important;
+  color: rgba(255, 255, 255, 0.8) !important;
   padding: 0.5rem 1rem !important;
   font-size: 1rem;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   font-weight: 500;
   margin: 0 0.5rem;
+  border-radius: 4px;
 }
 
 .nav-link-custom:hover {
-  color: #ffc107 !important;
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Remove underline effect */
 .nav-link-custom::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 50%;
-  background-color: #ffc107;
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.nav-link-custom:hover::after {
-  width: 70%;
+  display: none;
 }
 
 .active-link {
-  color: #ffc107 !important;
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
   font-weight: 600;
-}
-
-.active-link::after {
-  width: 70%;
 }
 
 /* Dropdown styles */
@@ -65,11 +53,45 @@
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem 0;
+  padding: 0;
+  min-width: 280px;
+  background-color: #fff;
+}
+
+.dropdown-header {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.user-details {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.user-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.25rem;
+}
+
+.user-email,
+.user-phone {
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
 .dropdown-item {
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   color: #333;
   transition: all 0.3s ease;
 }
@@ -80,20 +102,30 @@
 }
 
 .dropdown-divider {
-  margin: 0.5rem 0;
+  margin: 0;
   border-top: 1px solid #eee;
 }
 
 /* Account icon and text */
 #basic-nav-dropdown {
-  color: white !important;
+  color: rgba(255, 255, 255, 0.8) !important;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  text-decoration: none !important;
 }
 
 #basic-nav-dropdown:hover {
-  color: #ffc107 !important;
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Remove dropdown arrow */
+.dropdown-toggle::after {
+  display: none;
 }
 
 /* Show dropdown on hover */
@@ -188,30 +220,41 @@
   }
 
   .nav-link-custom {
-    padding: 0.5rem 0 !important;
+    padding: 0.75rem 0 !important;
+    margin: 0.25rem 0;
+  }
+
+  .active-link {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dropdown-menu {
+    background-color: #fff;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  .dropdown-header {
+    background-color: #f8f9fa;
+  }
+
+  .dropdown-item {
+    color: #333;
+    padding: 0.75rem 1rem;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+  }
+
+  .dropdown-divider {
+    border-top-color: #eee;
   }
 
   .book-now-btn {
     margin-top: 1rem;
     text-align: center;
-  }
-
-  .dropdown-menu {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-  }
-
-  .dropdown-item {
-    color: #fff;
-  }
-
-  .dropdown-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffc107;
-  }
-
-  .dropdown-divider {
-    border-top-color: rgba(255, 255, 255, 0.1);
   }
 } 
