@@ -51,7 +51,7 @@ function Navbar() {
         <Container fluid>
           <BootstrapNavbar.Brand as={Link} to="/" className="text-light fw-bold d-flex align-items-center">
             <img 
-              src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+              src="https://res.cloudinary.com/dpblvtdry/image/upload/v1744516929/ChatGPT_Image_Apr_13_2025_12_19_11_AM_x4etuz.png" 
               alt="Luxury Hotel Room" 
               className="navbar-logo"
             />
@@ -60,48 +60,79 @@ function Navbar() {
           <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
           <BootstrapNavbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link 
-                as={Link} 
-                to="/" 
-                className={`nav-link-custom ${isActive("/") ? "active-link" : ""}`}
-              >
-                Home
-              </Nav.Link>
-              <Nav.Link 
-                as={Link} 
-                to="/rooms" 
-                className={`nav-link-custom ${isActive("/rooms") ? "active-link" : ""}`}
-              >
-                Rooms
-              </Nav.Link>
-              <Nav.Link 
-                as={Link} 
-                to="/places" 
-                className={`nav-link-custom ${isActive("/places") ? "active-link" : ""}`}
-              >
-                Places
-              </Nav.Link>
-              <Nav.Link 
-                as={Link} 
-                to="/aboutus" 
-                className={`nav-link-custom ${isActive("/aboutus") ? "active-link" : ""}`}
-              >
-                About Us
-              </Nav.Link>
-              <Nav.Link 
-                as={Link} 
-                to="/contactus" 
-                className={`nav-link-custom ${isActive("/contactus") ? "active-link" : ""}`}
-              >
-                Contact Us
-              </Nav.Link>
-              <Nav.Link 
-                as={Link} 
-                to="/terms" 
-                className={`nav-link-custom ${isActive("/terms") ? "active-link" : ""}`}
-              >
-                Terms & Conditions
-              </Nav.Link>
+              {!(userInfo && userInfo.isAdmin) && (
+                <Nav.Link 
+                  as={Link} 
+                  to="/" 
+                  className={`nav-link-custom ${isActive("/") ? "active-link" : ""}`}
+                >
+                  Home
+                </Nav.Link>
+              )}
+              {!(userInfo && userInfo.isAdmin) && (
+                <>
+                  <Nav.Link 
+                    as={Link} 
+                    to="/rooms" 
+                    className={`nav-link-custom ${isActive("/rooms") ? "active-link" : ""}`}
+                  >
+                    Rooms
+                  </Nav.Link>
+                  <Nav.Link 
+                    as={Link} 
+                    to="/places" 
+                    className={`nav-link-custom ${isActive("/places") ? "active-link" : ""}`}
+                  >
+                    Places
+                  </Nav.Link>
+                  <Nav.Link 
+                    as={Link} 
+                    to="/terms" 
+                    className={`nav-link-custom ${isActive("/terms") ? "active-link" : ""}`}
+                  >
+                    Terms & Conditions
+                  </Nav.Link>
+                </>
+              )}
+              {!(userInfo && userInfo.isAdmin) && (
+                <>
+                  <Nav.Link 
+                    as={Link} 
+                    to="/aboutus" 
+                    className={`nav-link-custom ${isActive("/aboutus") ? "active-link" : ""}`}
+                  >
+                    About Us
+                  </Nav.Link>
+                  <Nav.Link 
+                    as={Link} 
+                    to="/contactus" 
+                    className={`nav-link-custom ${isActive("/contactus") ? "active-link" : ""}`}
+                  >
+                    Contact Us
+                  </Nav.Link>
+                </>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <Nav.Link as={Link} to="/admin">
+                  Admin Dashboard
+                </Nav.Link>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <>
+                  <Nav.Link as={Link} to="/admin/rooms" className="me-3">
+                    Rooms
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/admin/places" className="me-3">
+                    Places
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/admin/users" className="me-3">
+                    Users
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/admin/bookings" className="me-3">
+                    Bookings
+                  </Nav.Link>
+                </>
+              )}
               {userInfo && userInfo.name ? (
                 <NavDropdown 
                   title={
@@ -126,7 +157,11 @@ function Navbar() {
                     </div>
                   </div>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item as={Link} to="/profile" className="dropdown-item">
+                  <NavDropdown.Item 
+                    as={Link} 
+                    to={`/profile/${userInfo._id}`} 
+                    className="dropdown-item"
+                  >
                     <i className="fas fa-user me-2"></i>Profile
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/bookings" className="dropdown-item">

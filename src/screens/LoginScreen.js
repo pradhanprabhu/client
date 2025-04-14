@@ -27,9 +27,14 @@ function LoginScreen() {
 
       if (data.success) {
         localStorage.setItem('userInfo', JSON.stringify(data.data));
+        localStorage.setItem('token', data.data.token);
         setSuccess('Login successful!');
         setTimeout(() => {
-          navigate('/');
+          if (data.data.isAdmin) {
+            navigate('/admin');
+          } else {
+            navigate('/');
+          }
         }, 1500);
       }
     } catch (error) {

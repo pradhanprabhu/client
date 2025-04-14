@@ -45,6 +45,33 @@
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+.terms-and-conditions {
+  margin-top: 2rem;
+}
+
+.terms-and-conditions h5 {
+  color: #343a40;
+  font-weight: 600;
+}
+
+.terms-content {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.terms-content ul li {
+  color: #495057;
+  position: relative;
+  padding-left: 5px;
+}
+
+.terms-content ul li::before {
+  color: #28a745;
+  font-weight: bold;
+}
+
 .btn-primary {
   padding: 0.75rem;
   font-weight: 500;

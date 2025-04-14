@@ -1,0 +1,53 @@
+.place-card {
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.place-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.place-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.place-card .card-body {
+  padding: 1.5rem;
+}
+
+.place-card .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.place-card .text-muted {
+  font-size: 0.85rem;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.place-card .text-muted i {
+  margin-right: 0.5rem;
+  color: #495057;
+}
+
+.place-card .card-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #666;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+} 

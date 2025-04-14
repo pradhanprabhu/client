@@ -1,0 +1,73 @@
+.admin-navbar {
+  background-color: #343a40 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-navbar .navbar-brand {
+  font-weight: 600;
+  color: #fff !important;
+}
+
+.admin-navbar .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.admin-navbar .nav-link:hover {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.admin-navbar .nav-link.active {
+  color: #fff !important;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Dropdown styles */
+.admin-navbar .dropdown-menu {
+  background-color: #343a40;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.admin-navbar .dropdown-item {
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.admin-navbar .dropdown-item:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.admin-navbar .dropdown-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0;
+}
+
+.admin-navbar .dropdown-toggle::after {
+  display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 991.98px) {
+  .admin-navbar .navbar-collapse {
+    background-color: #343a40;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+
+  .admin-navbar .dropdown-menu {
+    background-color: transparent;
+    border: none;
+    padding-left: 1rem;
+  }
+} 

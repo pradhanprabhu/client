@@ -6,7 +6,7 @@ const RoomDetailsModal = ({ show, handleClose, room }) => {
   const [index, setIndex] = useState(0);
 
   const carouselItems = useMemo(() => 
-    room?.imageurls?.map((url, idx) => (
+    room?.images?.map((url, idx) => (
       <Carousel.Item key={idx}>
         <img
           className="d-block w-100 carousel-image"
@@ -23,7 +23,7 @@ const RoomDetailsModal = ({ show, handleClose, room }) => {
 
     const timer = setInterval(() => {
       setIndex((prevIndex) => 
-        prevIndex === (room?.imageurls?.length || 1) - 1 ? 0 : prevIndex + 1
+        prevIndex === (room?.images?.length || 1) - 1 ? 0 : prevIndex + 1
       );
     }, 3000);
 
@@ -75,39 +75,33 @@ const RoomDetailsModal = ({ show, handleClose, room }) => {
               <strong><i className="fas fa-bed"></i> Type:</strong> {room.type}
             </div>
             <div className="detail-item">
-              <strong><i className="fas fa-rupee-sign"></i> Rent per day:</strong> ₹{room.rentperday}
+              <strong><i className="fas fa-rupee-sign"></i> Rent per day:</strong> ₹{room.price}
             </div>
             <div className="detail-item">
-              <strong><i className="fas fa-users"></i> Max Count:</strong> {room.maxcount} persons
-            </div>
-            <div className="detail-item">
-              <strong><i className="fas fa-phone"></i> Phone:</strong> {room.phonenumber}
+              <strong><i className="fas fa-users"></i> Max Count:</strong> {room.capacity} persons
             </div>
           </div>
 
           <h4 className="mt-4">Description</h4>
           <p>{room.description}</p>
 
-          {room.facilities && (
-            <>
-              <h4 className="mt-4">Room Amenities</h4>
+          {room.amenities && room.amenities.length > 0 && (
+            <div className="facilities-section">
+              <h3 className="section-title">
+                <i className="fas fa-concierge-bell"></i>
+                Available Amenities
+              </h3>
               <div className="facilities-grid">
-                {typeof room.facilities === 'string' 
-                  ? room.facilities.split(/[,\s]+/).filter(f => f.trim()).map((facility, idx) => (
-                      <div key={idx} className="facility-item">
-                        <i className={`fas ${getFacilityIcon(facility.trim())}`}></i>
-                        <span>{facility.trim()}</span>
-                      </div>
-                    ))
-                  : room.facilities.map((facility, idx) => (
-                      <div key={idx} className="facility-item">
-                        <i className={`fas ${getFacilityIcon(facility.trim())}`}></i>
-                        <span>{facility.trim()}</span>
-                      </div>
-                    ))
-                }
+                {(Array.isArray(room.amenities) ? room.amenities : room.amenities.split(',')).map((facility, idx) => (
+                  <div key={idx} className="facility-item">
+                    <div className="facility-icon">
+                      <i className={`fas ${getFacilityIcon(facility.trim())}`}></i>
+                    </div>
+                    <span className="facility-name">{facility.trim()}</span>
+                  </div>
+                ))}
               </div>
-            </>
+            </div>
           )}
         </div>
       </Modal.Body>

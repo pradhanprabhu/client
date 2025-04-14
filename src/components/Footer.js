@@ -30,7 +30,6 @@ function Footer() {
             <h5>Quick Links</h5>
             <ul className="footer-links">
               <li><Link to="/aboutus">About Us</Link></li>
-              <li><Link to="/contact">Queries</Link></li>
               <li><Link to="/rooms">Rooms</Link></li>
               <li><Link to="/places">Places</Link></li>
               <li><Link to="/terms">Terms & Conditions</Link></li>

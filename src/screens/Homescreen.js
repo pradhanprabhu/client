@@ -6,17 +6,17 @@ import './Homescreen.css';
 const Homescreen = () => {
   const carouselItems = [
     {
-      image: 'https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D',
+      image: 'https://res.cloudinary.com/dpblvtdry/image/upload/v1744517422/ChatGPT_Image_Apr_13_2025_09_55_28_AM_rnisux.png',
       title: 'Welcome to Nepalese Hotel',
       description: 'Experience luxury and comfort in the heart of Nepal'
     },
     {
-      image: 'https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D',
+      image: 'https://res.cloudinary.com/dpblvtdry/image/upload/v1744517328/ChatGPT_Image_Apr_13_2025_09_53_50_AM_acdcox.png',
       title: 'Luxurious Accommodations',
       description: 'Choose from our selection of premium rooms and suites'
     },
     {
-      image: 'https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D',
+      image: 'https://res.cloudinary.com/dpblvtdry/image/upload/v1744517873/ChatGPT_Image_Apr_13_2025_10_02_56_AM_fjo14p.png',
       title: 'Explore Nepal',
       description: 'Discover the beauty and culture of Nepal'
     }
@@ -93,7 +93,7 @@ const Homescreen = () => {
             </Col>
             <Col md={6}>
               <img
-                src="https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D"
+                src="https://res.cloudinary.com/dpblvtdry/image/upload/v1744518538/ChatGPT_Image_Apr_13_2025_10_13_32_AM_ksb9il.png"
                 alt="Hotel"
                 className="img-fluid rounded"
               />
@@ -101,9 +101,11 @@ const Homescreen = () => {
           </Row>
         </Container>
       </section>
+      
     </div>
+
+
   );
 };
 
 export default Homescreen;
-

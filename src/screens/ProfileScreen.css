@@ -51,6 +51,24 @@
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+.form-control-readonly {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.form-control-readonly:focus {
+  border-color: #e2e8f0;
+  box-shadow: none;
+}
+
+.form-text {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
 .form-control-custom:disabled {
   background-color: #f7fafc;
   color: #4a5568;

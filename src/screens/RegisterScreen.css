@@ -44,4 +44,68 @@
   .register-card {
     padding: 1.5rem;
   }
+}
+
+.register-container {
+  padding: 2rem 0;
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+}
+
+.register-form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.password-strength-meter {
+  height: 5px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.strength-bar {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.password-requirements {
+  font-size: 0.875rem;
+}
+
+.password-requirements ul {
+  margin-top: 0.5rem;
+}
+
+.password-requirements li {
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.password-requirements li:before {
+  content: "✓";
+  margin-right: 0.5rem;
+}
+
+.text-success:before {
+  color: #28a745;
+}
+
+.text-danger:before {
+  color: #dc3545;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
 } 

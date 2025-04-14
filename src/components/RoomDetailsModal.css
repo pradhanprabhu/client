@@ -19,7 +19,7 @@
   background-color: #f8f9fa;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
 }
 
 .facilities-section {
@@ -50,29 +50,26 @@
 }
 
 .facilities-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .facility-item {
   display: flex;
   align-items: center;
-  gap: 15px;
-  background-color: #f8f9fa;
-  padding: 12px 20px;
+  background: white;
+  padding: 1rem;
   border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
   border: 1px solid #eee;
+  transition: transform 0.2s, border-color 0.2s;
 }
 
 .facility-item:hover {
   transform: translateX(10px);
   background-color: #fff;
-  border-color: #ffc107;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: #ddd;
 }
 
 .facility-item i {
@@ -87,7 +84,7 @@
 .carousel-control-next {
   width: 5%;
   opacity: 0.8;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   margin: 0 10px;
 }

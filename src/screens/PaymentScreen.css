@@ -4,6 +4,35 @@
   padding: 2rem 0;
 }
 
+.payment-methods {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.payment-method-option {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-method-option:hover {
+  border-color: #007bff;
+  background-color: #f8f9fa;
+}
+
+.payment-method-option.active {
+  border-color: #28a745;
+  background-color: #e7f1ff;
+}
+
+.payment-method-option .form-check-input {
+  margin-right: 0.5rem;
+}
+
 .payment-form-card,
 .payment-summary-card {
   border: none;
