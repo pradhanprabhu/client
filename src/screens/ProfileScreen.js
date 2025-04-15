@@ -12,10 +12,12 @@ function ProfileScreen() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [imagePreview, setImagePreview] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    profilePicture: ''
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -30,10 +32,8 @@ function ProfileScreen() {
     const fetchUserData = async () => {
       try {
         const storedUserInfo = JSON.parse(localStorage.getItem('userInfo'));
-        console.log('Stored User Info:', storedUserInfo);
 
         if (!storedUserInfo) {
-          console.log('No user info found in localStorage');
           navigate('/login');
           return;
         }
@@ -44,10 +44,8 @@ function ProfileScreen() {
           }
         };
 
-        console.log('Making API request to:', `/api/users/profile/${storedUserInfo._id}`);
-        const { data } = await axios.get(`/api/users/profile/${storedUserInfo._id}`);
-        console.log('API Response Data:', data);
-        
+        const { data } = await axios.get(`/api/users/profile/${storedUserInfo._id}`, config);
+
         if (!data || !data.success) {
           throw new Error('Failed to fetch user data');
         }
@@ -56,14 +54,11 @@ function ProfileScreen() {
         setFormData({
           name: data.data.name,
           email: data.data.email,
-          phone: data.data.phone
+          phone: data.data.phone,
+          profilePicture: data.data.profilePicture || ''
         });
+        setImagePreview(data.data.profilePicture || '');
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        console.error('Error response:', error.response);
-        console.error('Error message:', error.message);
-        console.error('Error status:', error.response?.status);
-        
         if (error.response) {
           setError(`Error: ${error.response.status} - ${error.response.data?.message || 'Failed to fetch user data'}`);
         } else if (error.request) {
@@ -86,7 +81,7 @@ function ProfileScreen() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -94,7 +89,7 @@ function ProfileScreen() {
 
   const handlePasswordInputChange = (e) => {
     const { name, value } = e.target;
-    setPasswordData(prev => ({
+    setPasswordData((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -106,8 +101,31 @@ function ProfileScreen() {
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*]/.test(password);
-
     return hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    setImagePreview(URL.createObjectURL(file));
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const { data } = await axios.post('/api/users/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      setFormData((prev) => ({
+        ...prev,
+        profilePicture: data.url
+      }));
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      setError('Image upload failed');
+    }
   };
 
   const handlePasswordChange = async (e) => {
@@ -116,16 +134,14 @@ function ProfileScreen() {
     setError('');
     setSuccess('');
 
-    // Validate passwords match
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       setError('New passwords do not match');
       setLoading(false);
       return;
     }
 
-    // Validate password requirements
     if (!validatePassword(passwordData.newPassword)) {
-      setError('Password must contain at least 8 characters, including uppercase, lowercase, number, and special character');
+      setError('Password must be strong (8+ chars, uppercase, lowercase, number, special char)');
       setLoading(false);
       return;
     }
@@ -146,20 +162,11 @@ function ProfileScreen() {
 
       const { data } = await axios.put(`/api/users/profile/${userInfo._id}`, updateData, config);
 
-      // Clear password form
       setPasswordData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
       });
-
-      // Update form data and user info state
-      setFormData({
-        name: data.data.name,
-        email: data.data.email,
-        phone: data.data.phone
-      });
-      setUserInfo(data.data);
 
       setShowPasswordForm(false);
       setSuccess('Password updated successfully');
@@ -175,8 +182,11 @@ function ProfileScreen() {
     setError('');
     setSuccess('');
 
-    // Check if any changes were made
-    if (formData.name === userInfo.name && formData.phone === userInfo.phone) {
+    if (
+      formData.name === userInfo.name &&
+      formData.phone === userInfo.phone &&
+      formData.profilePicture === userInfo.profilePicture
+    ) {
       setError('No changes were made to update');
       return;
     }
@@ -191,33 +201,32 @@ function ProfileScreen() {
         }
       };
 
-      // Prepare update data
       const updateData = {
         name: formData.name,
         phone: formData.phone,
-        updatePassword: false // Flag to indicate we're not updating password
+        profilePicture: formData.profilePicture,
+        updatePassword: false
       };
 
-      console.log('Sending profile update:', updateData);
       const response = await axios.put(`/api/users/profile/${userInfo._id}`, updateData, config);
-      console.log('Profile update response:', response.data);
-      
+
       if (response.data.success) {
-        // Update local storage with new user info
         const updatedUserInfo = {
           ...storedUserInfo,
           name: response.data.data.name,
-          phone: response.data.data.phone
+          phone: response.data.data.phone,
+          profilePicture: response.data.data.profilePicture
         };
         localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
 
-        // Update form data and user info state
+        setUserInfo(response.data.data);
         setFormData({
           name: response.data.data.name,
           email: response.data.data.email,
-          phone: response.data.data.phone
+          phone: response.data.data.phone,
+          profilePicture: response.data.data.profilePicture
         });
-        setUserInfo(response.data.data);
+        setImagePreview(response.data.data.profilePicture);
         setSuccess('Profile updated successfully');
         setIsEditing(false);
       } else {
@@ -249,7 +258,11 @@ function ProfileScreen() {
               <Card.Body className="p-4">
                 <div className="text-center mb-4">
                   <div className="profile-avatar">
-                    <i className="fas fa-user"></i>
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Profile" className="rounded-circle" width="100" height="100" />
+                    ) : (
+                      <i className="fas fa-user fa-3x"></i>
+                    )}
                   </div>
                   <h2 className="mt-3">Welcome, {userInfo?.name}</h2>
                   <p className="text-muted">Member since {new Date(userInfo?.createdAt).toLocaleDateString()}</p>
@@ -260,7 +273,7 @@ function ProfileScreen() {
 
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-4">
-                    <Form.Label className="form-label">Full Name</Form.Label>
+                    <Form.Label>Full Name</Form.Label>
                     <Form.Control
                       type="text"
                       name="name"
@@ -268,27 +281,17 @@ function ProfileScreen() {
                       onChange={handleInputChange}
                       disabled={!isEditing}
                       required
-                      className="form-control-custom"
                     />
                   </Form.Group>
 
                   <Form.Group className="mb-4">
-                    <Form.Label className="form-label">Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      readOnly
-                      disabled
-                      className="form-control-custom form-control-readonly"
-                    />
-                    <Form.Text className="text-muted">
-                      Email cannot be changed
-                    </Form.Text>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" value={formData.email} disabled readOnly />
+                    <Form.Text className="text-muted">Email cannot be changed</Form.Text>
                   </Form.Group>
 
                   <Form.Group className="mb-4">
-                    <Form.Label className="form-label">Phone</Form.Label>
+                    <Form.Label>Phone</Form.Label>
                     <Form.Control
                       type="tel"
                       name="phone"
@@ -296,27 +299,24 @@ function ProfileScreen() {
                       onChange={handleInputChange}
                       disabled={!isEditing}
                       required
-                      className="form-control-custom"
                     />
                   </Form.Group>
 
+                  {isEditing && (
+                    <Form.Group className="mb-4">
+                      <Form.Label>Profile Picture</Form.Label>
+                      <Form.Control type="file" accept="image/*" onChange={handleImageUpload} />
+                    </Form.Group>
+                  )}
+
                   <div className="d-flex gap-3 justify-content-center mt-4">
                     {!isEditing ? (
-                      <Button
-                        variant="primary"
-                        onClick={() => setIsEditing(true)}
-                        className="btn-custom"
-                      >
+                      <Button variant="primary" onClick={() => setIsEditing(true)}>
                         Edit Profile
                       </Button>
                     ) : (
                       <>
-                        <Button
-                          type="submit"
-                          variant="success"
-                          className="btn-custom"
-                          disabled={loading}
-                        >
+                        <Button type="submit" variant="success" disabled={loading}>
                           {loading ? 'Saving...' : 'Save Changes'}
                         </Button>
                         <Button
@@ -326,10 +326,11 @@ function ProfileScreen() {
                             setFormData({
                               name: userInfo.name,
                               email: userInfo.email,
-                              phone: userInfo.phone
+                              phone: userInfo.phone,
+                              profilePicture: userInfo.profilePicture
                             });
+                            setImagePreview(userInfo.profilePicture);
                           }}
-                          className="btn-custom"
                         >
                           Cancel
                         </Button>
@@ -344,15 +345,15 @@ function ProfileScreen() {
                   <Button
                     variant="outline-primary"
                     onClick={() => setShowPasswordForm(!showPasswordForm)}
-                    className="btn-custom"
                   >
                     {showPasswordForm ? 'Hide Password Form' : 'Change Password'}
                   </Button>
                 </div>
 
                 {showPasswordForm && (
-                  <Form onSubmit={handlePasswordChange} className="mt-4">
+                  <Form onSubmit={handlePasswordChange}>
                     <h4 className="mb-4">Change Password</h4>
+
                     <Form.Group className="mb-3">
                       <Form.Label>Current Password</Form.Label>
                       <Form.Control
@@ -361,7 +362,6 @@ function ProfileScreen() {
                         value={passwordData.currentPassword}
                         onChange={handlePasswordInputChange}
                         required
-                        className="form-control-custom"
                       />
                     </Form.Group>
 
@@ -373,10 +373,9 @@ function ProfileScreen() {
                         value={passwordData.newPassword}
                         onChange={handlePasswordInputChange}
                         required
-                        className="form-control-custom"
                       />
                       <Form.Text className="text-muted">
-                        Password must contain at least 8 characters, including uppercase, lowercase, number, and special character
+                        Must be 8+ characters with uppercase, lowercase, number, and special character.
                       </Form.Text>
                     </Form.Group>
 
@@ -388,17 +387,11 @@ function ProfileScreen() {
                         value={passwordData.confirmPassword}
                         onChange={handlePasswordInputChange}
                         required
-                        className="form-control-custom"
                       />
                     </Form.Group>
 
                     <div className="d-flex justify-content-center">
-                      <Button
-                        type="submit"
-                        variant="primary"
-                        className="btn-custom"
-                        disabled={loading}
-                      >
+                      <Button type="submit" variant="primary" disabled={loading}>
                         {loading ? 'Updating...' : 'Update Password'}
                       </Button>
                     </div>
@@ -413,4 +406,4 @@ function ProfileScreen() {
   );
 }
 
-export default ProfileScreen; 
+export default ProfileScreen;

@@ -5,6 +5,7 @@ import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './AdminRooms.css';
 
 const AdminRooms = () => {
+  const [roomImages, setRoomImages] = useState([]); // Store multiple image URLs
   const [rooms, setRooms] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
@@ -15,14 +16,12 @@ const AdminRooms = () => {
     price: '',
     capacity: '',
     amenities: '',
-    images: '',
     availability: true
   });
 
   const [errors, setErrors] = useState({
     price: '',
     capacity: '',
-    images: '',
     amenities: ''
   });
 
@@ -48,10 +47,38 @@ const AdminRooms = () => {
       price: room.price,
       capacity: room.capacity,
       amenities: room.amenities,
-      images: room.images.join(', '),
       availability: room.availability
     });
+    setRoomImages(room.images); // Set existing images for editing
     setShowModal(true);
+  };
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    const uploadedUrls = [];
+
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await axios.post('/api/users/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        uploadedUrls.push(response.data.url); // Save the Cloudinary URL
+      } catch (error) {
+        console.error('Image upload failed:', error);
+      }
+    }
+
+    setRoomImages((prevImages) => [...prevImages, ...uploadedUrls]); // Add new images
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedImages = roomImages.filter((_, i) => i !== index);
+    setRoomImages(updatedImages); // Remove selected image
   };
 
   const handleDelete = async (id) => {
@@ -75,7 +102,6 @@ const AdminRooms = () => {
     setErrors({
       price: '',
       capacity: '',
-      images: '',
       amenities: ''
     });
 
@@ -99,15 +125,6 @@ const AdminRooms = () => {
       valid = false;
     }
 
-    // Image validation: must not be empty and should be a valid URL
-    if (!formData.images || !isValidUrl(formData.images)) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        images: "Please enter a valid image URL."
-      }));
-      valid = false;
-    }
-
     // Amenities validation: should not be empty
     if (!formData.amenities || formData.amenities.trim() === '') {
       setErrors((prevErrors) => ({
@@ -125,7 +142,8 @@ const AdminRooms = () => {
       const updatedData = {
         ...formData,
         price,
-        capacity
+        capacity,
+        images: roomImages // Include images in the form data
       };
 
       if (editingRoom) {
@@ -142,9 +160,9 @@ const AdminRooms = () => {
         price: '',
         capacity: '',
         amenities: '',
-        images: '',
         availability: true
       });
+      setRoomImages([]); // Clear uploaded images
       fetchRooms();
     } catch (error) {
       console.error('Error saving room:', error);
@@ -154,10 +172,7 @@ const AdminRooms = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'images') {
-      const imageArray = value.split(',').map(url => url.trim()).filter(url => url !== '');
-      setFormData({ ...formData, [name]: imageArray.join(', ') });
-    } else if (name === 'availability') {
+    if (name === 'availability') {
       setFormData({ ...formData, [name]: value === 'true' });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -173,15 +188,10 @@ const AdminRooms = () => {
       price: '',
       capacity: '',
       amenities: '',
-      images: '',
       availability: true
     });
+    setRoomImages([]); // Reset images when adding new room
     setShowModal(true);
-  };
-
-  const isValidUrl = (url) => {
-    const pattern = new RegExp('https?://[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(/.*)?');
-    return pattern.test(url);
   };
 
   return (
@@ -332,17 +342,36 @@ const AdminRooms = () => {
               />
               {errors.amenities && <div className="text-danger">{errors.amenities}</div>}
             </Form.Group>
+            
             <Form.Group className="mb-3">
-              <Form.Label>Image URLs (comma separated)</Form.Label>
+              <Form.Label>Room Images</Form.Label>
               <Form.Control
-                type="text"
-                name="images"
-                value={formData.images}
-                onChange={handleInputChange}
-                required
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageUpload}
               />
-              {errors.images && <div className="text-danger">{errors.images}</div>}
+              <div className="mt-2">
+                {roomImages.length > 0 && (
+                  <div className="image-previews">
+                    {roomImages.map((url, index) => (
+                      <div key={index} style={{ position: 'relative' }}>
+                        <img src={url} alt={`Room Image ${index}`} height="80" />
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          style={{ position: 'absolute', top: 0, right: 0 }}
+                          onClick={() => handleDeleteImage(index)}
+                        >
+                          ×
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </Form.Group>
+            
             <Form.Group className="mb-3">
               <Form.Label>Availability</Form.Label>
               <Form.Select
@@ -354,11 +383,12 @@ const AdminRooms = () => {
                 <option value={false}>Unavailable</option>
               </Form.Select>
             </Form.Group>
+
             <div className="modal-actions">
               <Button variant="secondary" onClick={() => setShowModal(false)}>
                 Cancel
               </Button>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" className="ms-2">
                 {editingRoom ? 'Update Room' : 'Add Room'}
               </Button>
             </div>

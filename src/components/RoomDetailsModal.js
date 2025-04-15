@@ -75,7 +75,7 @@ const RoomDetailsModal = ({ show, handleClose, room }) => {
               <strong><i className="fas fa-bed"></i> Type:</strong> {room.type}
             </div>
             <div className="detail-item">
-              <strong><i className="fas fa-rupee-sign"></i> Rent per day:</strong> ₹{room.price}
+              <strong><i class="fa-solid fa-indian-rupee-sign"></i> Rent per day:</strong> ₹{room.price}
             </div>
             <div className="detail-item">
               <strong><i className="fas fa-users"></i> Max Count:</strong> {room.capacity} persons

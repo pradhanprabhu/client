@@ -22,7 +22,8 @@ import AdminUsers from './screens/AdminUsers';
 import AdminBookings from './screens/AdminBookings';
 import AdminNavbar from './components/AdminNavbar';
 import PlacesScreen from './screens/PlacesScreen';
-import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -57,11 +58,28 @@ const AppContent = () => {
           <Route path="/profile/:userId" element={<ProfileScreen />} />
           <Route path="/book/:roomId" element={<BookingScreen />} />
           <Route path="/payment" element={<PaymentScreen />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/rooms" element={<AdminRooms />} />
-          <Route path="/admin/places" element={<AdminPlaces />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="/admin/bookings" element={<AdminBookings />} />
+          
+          {/* Protect admin routes */}
+          <Route 
+            path="/admin" 
+            element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/admin/rooms" 
+            element={<ProtectedRoute><AdminRooms /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/admin/places" 
+            element={<ProtectedRoute><AdminPlaces /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/admin/users" 
+            element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} 
+          />
+          <Route 
+            path="/admin/bookings" 
+            element={<ProtectedRoute><AdminBookings /></ProtectedRoute>} 
+          />
           <Route path="/places" element={<PlacesScreen />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

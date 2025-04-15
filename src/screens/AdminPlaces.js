@@ -65,7 +65,6 @@ const AdminPlaces = () => {
 
   const isFormValid = () => {
     const { name, description, location, category, distance, bestTime, images } = formData;
-
     if (
       !name.trim() ||
       !description.trim() ||
@@ -75,19 +74,18 @@ const AdminPlaces = () => {
       distance === '' ||
       isNaN(distance) ||
       parseFloat(distance) < 0 ||
+      !Array.isArray(images) ||
       images.length === 0
     ) {
       return false;
     }
-
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!isFormValid()) {
-      alert("Please fill all fields correctly. No field should be empty or contain only whitespace, and distance must be ≥ 0.");
+      alert("Please fill all fields correctly. No field should be empty, and distance must be ≥ 0.");
       return;
     }
 
@@ -106,14 +104,7 @@ const AdminPlaces = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === 'images') {
-      const imageArray = value
-        .split(',')
-        .map(url => url.trim())
-        .filter(url => url !== '');
-      setFormData({ ...formData, [name]: imageArray });
-    } else if (name === 'distance') {
+    if (name === 'distance') {
       const num = parseFloat(value);
       setFormData({ ...formData, [name]: isNaN(num) || num < 0 ? '' : num });
     } else {
@@ -134,6 +125,37 @@ const AdminPlaces = () => {
       availability: true
     });
     setShowModal(true);
+  };
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    const uploadedUrls = [];
+
+    for (const file of files) {
+      const imgFormData = new FormData();
+      imgFormData.append('image', file);
+
+      try {
+        const response = await axios.post('/api/users/upload', imgFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        uploadedUrls.push(response.data.url);
+      } catch (error) {
+        console.error('Upload failed:', error);
+      }
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      images: [...prev.images, ...uploadedUrls]
+    }));
+  };
+
+  const removeImage = (index) => {
+    const updatedImages = formData.images.filter((_, i) => i !== index);
+    setFormData({ ...formData, images: updatedImages });
   };
 
   return (
@@ -169,19 +191,10 @@ const AdminPlaces = () => {
               <td>{place.bestTime}</td>
               <td>{place.description.substring(0, 50)}...</td>
               <td>
-                <Button
-                  variant="outline-primary"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => handleEdit(place)}
-                >
+                <Button variant="outline-primary" size="sm" className="me-2" onClick={() => handleEdit(place)}>
                   <FaEdit /> Edit
                 </Button>
-                <Button
-                  variant="outline-danger"
-                  size="sm"
-                  onClick={() => handleDelete(place._id)}
-                >
+                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(place._id)}>
                   <FaTrash /> Delete
                 </Button>
               </td>
@@ -278,14 +291,28 @@ const AdminPlaces = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Image URLs (comma separated)</Form.Label>
+              <Form.Label>Upload Images</Form.Label>
               <Form.Control
-                type="text"
-                name="images"
-                value={Array.isArray(formData.images) ? formData.images.join(', ') : ''}
-                onChange={handleInputChange}
-                placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageUpload}
               />
+              <div className="mt-2 d-flex flex-wrap gap-2">
+                {formData.images.map((url, index) => (
+                  <div key={index} style={{ position: 'relative' }}>
+                    <img src={url} alt={`Preview ${index}`} height="80" />
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      style={{ position: 'absolute', top: 0, right: 0 }}
+                      onClick={() => removeImage(index)}
+                    >
+                      ×
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </Form.Group>
 
             <div className="modal-actions mt-4">
