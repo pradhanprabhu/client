@@ -23,6 +23,7 @@ import AdminBookings from './screens/AdminBookings';
 import AdminNavbar from './components/AdminNavbar';
 import PlacesScreen from './screens/PlacesScreen';
 import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import VerificationScreen from "./screens/VerficationsScreen";
 
 import './App.css';
 import { ToastContainer } from 'react-toastify';
@@ -58,6 +59,7 @@ const AppContent = () => {
           <Route path="/profile/:userId" element={<ProfileScreen />} />
           <Route path="/book/:roomId" element={<BookingScreen />} />
           <Route path="/payment" element={<PaymentScreen />} />
+         <Route path="/verify" element={<VerificationScreen />} />
           
           {/* Protect admin routes */}
           <Route 
