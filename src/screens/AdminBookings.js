@@ -28,7 +28,14 @@ const AdminBookings = () => {
       setLoading(true);
       setError('');
       console.log('Fetching bookings...');
-      const { data } = await axios.get('/api/bookings/admin', {
+      
+      // Check if user is logged in and has a token
+      if (!userInfo || !userInfo.token) {
+        setError('Please log in to view bookings');
+        return;
+      }
+
+      const { data } = await axios.get('http://localhost:5000/api/bookings/admin', {
         headers: {
           'Authorization': `Bearer ${userInfo.token}`
         }
@@ -36,8 +43,18 @@ const AdminBookings = () => {
       console.log('Received bookings:', data);
       setBookings(data);
     } catch (error) {
-      setError(error.response?.data?.message || 'Error fetching bookings');
       console.error('Error fetching bookings:', error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        setError(error.response.data.message || 'Error fetching bookings');
+      } else if (error.request) {
+        // The request was made but no response was received
+        setError('No response from server. Please try again later.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError('Error setting up request. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

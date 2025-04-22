@@ -26,11 +26,20 @@ function LoginScreen() {
       });
 
       if (data.success) {
-        localStorage.setItem('userInfo', JSON.stringify(data.data));
-        localStorage.setItem('token', data.data.token);
+        const user = data.data;
+
+        // Check if email is verified
+        if (!user.isVerified) {
+          setError('Please verify your email before logging in.');
+          return;
+        }
+
+        localStorage.setItem('userInfo', JSON.stringify(user));
+        localStorage.setItem('token', user.token);
         setSuccess('Login successful!');
+
         setTimeout(() => {
-          if (data.data.isAdmin) {
+          if (user.isAdmin) {
             navigate('/admin');
           } else {
             navigate('/');
@@ -76,6 +85,11 @@ function LoginScreen() {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
+                    <div className="text-end mt-2">
+                      <Link to="/forgot-password" className="text-primary">
+                        Forgot Password?
+                      </Link>
+                    </div>
                   </Form.Group>
 
                   <Button 
@@ -105,4 +119,4 @@ function LoginScreen() {
   );
 }
 
-export default LoginScreen; 
+export default LoginScreen;

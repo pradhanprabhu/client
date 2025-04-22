@@ -1,42 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Card, Table, Badge } from 'react-bootstrap';
-import { FaHotel, FaMapMarkedAlt, FaUsers, FaCalendarAlt, FaRupeeSign } from 'react-icons/fa';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import { FaHotel, FaMapMarkedAlt, FaUsers, FaRupeeSign } from 'react-icons/fa';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import './AdminDashboard.css';
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const AdminDashboard = () => {
   const [totals, setTotals] = useState({ 
     rooms: 0, 
     places: 0, 
     users: 0, 
-    bookings: 0,
     revenue: 0
   });
-  const [recentBookings, setRecentBookings] = useState([]);
+  const [bookingStats, setBookingStats] = useState({
+    labels: [],
+    data: []
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [roomsRes, placesRes, usersRes] = await Promise.all([
+        const [roomsRes, placesRes, usersRes, bookingsRes] = await Promise.all([
           axios.get('/api/rooms/'),
           axios.get('/api/places/'),
           axios.get('/api/users/'),
-          // axios.get('/api/bookings/')
+          axios.get('/api/bookings/admin')
         ]);
+
+        // Calculate total revenue and process booking data
+        const totalRevenue = bookingsRes.data.reduce((acc, booking) => 
+          booking.status === 'confirmed' ? acc + booking.totalAmount : acc, 0);
+
+        // Process bookings for chart data
+        const last7Days = [...Array(7)].map((_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          return d.toISOString().split('T')[0];
+        }).reverse();
+
+        const bookingCounts = last7Days.map(date => {
+          return bookingsRes.data.filter(booking => 
+            booking.createdAt.split('T')[0] === date
+          ).length;
+        });
+
+        setBookingStats({
+          labels: last7Days.map(date => new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })),
+          data: bookingCounts
+        });
 
         setTotals({
           rooms: roomsRes.data.length,
           places: placesRes.data.length,
           users: usersRes.data.length,
-          // // bookings: bookingsRes.data.length,
-          revenue:20000
+          revenue: totalRevenue
         });
-
-        // Get recent bookings (last 5)
-        const sortedBookings = [...bookingsRes.data]
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .slice(0, 5);
-        setRecentBookings(sortedBookings);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -62,6 +99,43 @@ const AdminDashboard = () => {
       </Card>
     </Col>
   );
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: 'Bookings Last 7 Days',
+        font: {
+          size: 16,
+          weight: 'bold'
+        }
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    }
+  };
+
+  const chartData = {
+    labels: bookingStats.labels,
+    datasets: [
+      {
+        data: bookingStats.data,
+        backgroundColor: '#3498db',
+        borderColor: '#2980b9',
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <div className="admin-dashboard">
@@ -95,40 +169,9 @@ const AdminDashboard = () => {
           />
         </Row>
 
-        <Card className="recent-bookings">
-          <Card.Header className="d-flex justify-content-between align-items-center">
-            <h5 className="mb-0">Recent Bookings</h5>
-            <Badge bg="primary" className="view-all">View All</Badge>
-          </Card.Header>
+        <Card className="mt-4">
           <Card.Body>
-            <Table hover responsive>
-              <thead>
-                <tr>
-                  <th>Booking ID</th>
-                  <th>User</th>
-                  <th>Room</th>
-                  <th>Check In</th>
-                  <th>Check Out</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentBookings.map((booking) => (
-                  <tr key={booking._id}>
-                    <td>{booking._id.slice(-6)}</td>
-                    <td>{booking.userName}</td>
-                    <td>{booking.roomName}</td>
-                    <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
-                    <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td>
-                    <td>
-                      <Badge bg={booking.status === 'confirmed' ? 'success' : 'warning'}>
-                        {booking.status}
-                      </Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            <Bar options={chartOptions} data={chartData} height={100} />
           </Card.Body>
         </Card>
       </Container>

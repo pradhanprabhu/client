@@ -1,0 +1,121 @@
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: #343a40;
+  color: #fff;
+  padding: 0;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem 0;
+}
+
+.sidebar-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background-color: #343a40;
+  z-index: 1;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.sidebar-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  padding: 0.75rem 1.5rem !important;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+}
+
+.sidebar-link i {
+  width: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.sidebar-link span {
+  flex: 1;
+}
+
+.sidebar-link:hover {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.sidebar-link.active {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+  width: 100%;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  bottom: 0;
+  background-color: #343a40;
+  z-index: 1;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.user-info i {
+  font-size: 1.25rem;
+}
+
+/* Responsive styles */
+@media (max-width: 991.98px) {
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    z-index: 1030;
+  }
+
+  .sidebar-content {
+    padding: 0.5rem 0;
+  }
+
+  .sidebar-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .sidebar-link {
+    padding: 0.5rem 1rem !important;
+  }
+
+  .sidebar-footer {
+    padding: 0.5rem 1rem;
+    position: relative;
+  }
+} 

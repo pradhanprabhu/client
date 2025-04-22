@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const ContactUs = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('/api/contact/send', {
+        name,
+        email,
+        subject,
+        message,
+      });
+
+      if (response.data.success) {
+        alert('Message sent successfully!');
+        setName('');
+        setEmail('');
+        setSubject('');
+        setMessage('');
+      }
+    } catch (error) {
+      alert('Failed to send message. Please try again.');
+    }
+  };
+
   return (
     <div className="container py-5">
       <h1 className="text-center mb-5">Contact Us</h1>
-      
+
       <div className="row">
         {/* Contact Information */}
         <div className="col-md-6 mb-4">
@@ -36,22 +65,50 @@ const ContactUs = () => {
           <div className="card h-100">
             <div className="card-body">
               <h3 className="card-title mb-4">Send us a Message</h3>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">Name</label>
-                  <input type="text" className="form-control" id="name" required />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email</label>
-                  <input type="email" className="form-control" id="email" required />
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="subject" className="form-label">Subject</label>
-                  <input type="text" className="form-control" id="subject" required />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="subject"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="message" className="form-label">Message</label>
-                  <textarea className="form-control" id="message" rows="5" required></textarea>
+                  <textarea
+                    className="form-control"
+                    id="message"
+                    rows="5"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                  ></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary">Send Message</button>
               </form>
@@ -81,4 +138,4 @@ const ContactUs = () => {
   );
 };
 
-export default ContactUs; 
+export default ContactUs;
