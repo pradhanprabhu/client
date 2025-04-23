@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import { FaHotel, FaMapMarkedAlt, FaUsers, FaRupeeSign } from 'react-icons/fa';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { FaHotel, FaMapMarkedAlt, FaUsers, FaRupeeSign, FaFilePdf, FaCalendarAlt } from 'react-icons/fa';
 import { Bar } from 'react-chartjs-2';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,22 +31,39 @@ const AdminDashboard = () => {
     rooms: 0, 
     places: 0, 
     users: 0, 
-    revenue: 0
+    revenue: 0,
+    bookings: 0
   });
   const [bookingStats, setBookingStats] = useState({
     labels: [],
     data: []
   });
+  const [error, setError] = useState('');
+  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (!userInfo || !userInfo.token) {
+          setError('Please log in to view dashboard');
+          return;
+        }
+
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${userInfo.token}`
+          }
+        };
+
         const [roomsRes, placesRes, usersRes, bookingsRes] = await Promise.all([
-          axios.get('/api/rooms/'),
-          axios.get('/api/places/'),
-          axios.get('/api/users/'),
-          axios.get('/api/bookings/admin')
+          axios.get('http://localhost:5000/api/rooms/', config),
+          axios.get('http://localhost:5000/api/places/', config),
+          axios.get('http://localhost:5000/api/users/', config),
+          axios.get('http://localhost:5000/api/bookings/admin', config)
         ]);
+
+        setBookings(bookingsRes.data);
 
         // Calculate total revenue and process booking data
         const totalRevenue = bookingsRes.data.reduce((acc, booking) => 
@@ -72,15 +91,65 @@ const AdminDashboard = () => {
           rooms: roomsRes.data.length,
           places: placesRes.data.length,
           users: usersRes.data.length,
-          revenue: totalRevenue
+          revenue: totalRevenue,
+          bookings: bookingsRes.data.length
         });
       } catch (error) {
         console.error('Error fetching data:', error);
+        setError(error.response?.data?.message || 'Error fetching dashboard data');
       }
     };
 
     fetchData();
   }, []);
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(20);
+    doc.text('Hotel Booking Report', 14, 15);
+    
+    // Add date
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 25);
+    
+    // Add summary
+    doc.setFontSize(14);
+    doc.text('Summary', 14, 35);
+    doc.setFontSize(12);
+    doc.text(`Total Rooms: ${totals.rooms}`, 14, 45);
+    doc.text(`Total Places: ${totals.places}`, 14, 55);
+    doc.text(`Total Users: ${totals.users}`, 14, 65);
+    doc.text(`Total Bookings: ${totals.bookings}`, 14, 75);
+    doc.text(`Total Revenue: ₹${totals.revenue}`, 14, 85);
+    
+    // Add bookings table
+    doc.setFontSize(14);
+    doc.text('Recent Bookings', 14, 95);
+    
+    const tableData = bookings.map(booking => [
+      booking._id.slice(-6),
+      booking.user?.name || 'N/A',
+      booking.room?.name || 'N/A',
+      new Date(booking.checkIn).toLocaleDateString(),
+      new Date(booking.checkOut).toLocaleDateString(),
+      booking.status,
+      `₹${booking.totalAmount}`
+    ]);
+    
+    autoTable(doc, {
+      startY: 100,
+      head: [['Booking ID', 'User', 'Room', 'Check In', 'Check Out', 'Status', 'Amount']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: { fillColor: [41, 128, 185] },
+      styles: { fontSize: 10 }
+    });
+    
+    // Save the PDF
+    doc.save('hotel-bookings-report.pdf');
+  };
 
   const StatCard = ({ title, value, icon, color }) => (
     <Col md={3} className="mb-4">
@@ -137,10 +206,30 @@ const AdminDashboard = () => {
     ],
   };
 
+  if (error) {
+    return (
+      <Container className="py-4">
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      </Container>
+    );
+  }
+
   return (
     <div className="admin-dashboard">
       <Container className="py-4">
-        <h1 className="dashboard-title">Dashboard Overview</h1>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1 className="dashboard-title">Dashboard Overview</h1>
+          <Button 
+            variant="primary" 
+            onClick={generatePDF}
+            className="download-pdf-btn"
+          >
+            <FaFilePdf className="me-2" />
+            Download Report
+          </Button>
+        </div>
         
         <Row>
           <StatCard
@@ -160,6 +249,12 @@ const AdminDashboard = () => {
             value={totals.users}
             icon={<FaUsers className="stat-icon" />}
             color="info"
+          />
+          <StatCard
+            title="Total Bookings"
+            value={totals.bookings}
+            icon={<FaCalendarAlt className="stat-icon" />}
+            color="danger"
           />
           <StatCard
             title="Total Revenue"

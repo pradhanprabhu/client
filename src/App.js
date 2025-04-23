@@ -14,17 +14,20 @@ import Terms from './screens/Terms';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import BookingScreen from './screens/BookingScreen';
-import PaymentScreen from './screens/PaymentScreen';
-import AdminDashboard from './screens/AdminDashboard';
-import AdminRooms from './screens/AdminRooms';
-import AdminPlaces from './screens/AdminPlaces';
+import BookingScreen from './screens/user/BookingScreen';
+import PaymentScreen from './screens/user/PaymentScreen';
+import AdminDashboard from './screens/admin/AdminDashboard';
+import AdminRooms from './screens/admin/AdminRooms';
+import AdminPlaces from './screens/admin/AdminPlaces';
 import AdminUsers from './screens/AdminUsers';
-import AdminBookings from './screens/AdminBookings';
-import PlacesScreen from './screens/PlacesScreen';
+import AdminBookings from './screens/admin/AdminBookings';
+import PlacesScreen from './screens/user/PlacesScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import VerificationScreen from "./screens/VerficationsScreen";
 import VerifyReset from './screens/VerifyReset';
+import BookingsScreen from './screens/BookingsScreen';
+import UserBookingsScreen from './screens/UserBookingsScreen';
+import AdminNavbar from './components/AdminNavbar';
 
 import './App.css';
 import { ToastContainer } from 'react-toastify';
@@ -53,11 +56,11 @@ function AppContent() {
               <AdminSidebar />
               <main className="admin-main-content">
                 <Routes>
-                  <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="/admin/rooms" element={<AdminRooms />} />
-                  <Route path="/admin/places" element={<AdminPlaces />} />
-                  <Route path="/admin/bookings" element={<AdminBookings />} />
-                  <Route path="/admin/users" element={<AdminUsers />} />
+                  <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+                  <Route path="/admin/rooms" element={<ProtectedRoute><AdminRooms /></ProtectedRoute>} />
+                  <Route path="/admin/places" element={<ProtectedRoute><AdminPlaces /></ProtectedRoute>} />
+                  <Route path="/admin/bookings" element={<ProtectedRoute><AdminBookings /></ProtectedRoute>} />
+                  <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
                 </Routes>
               </main>
             </div>
@@ -77,6 +80,7 @@ function AppContent() {
                   <Route path="/payment" element={<PaymentScreen />} />
                   <Route path="/verify" element={<VerificationScreen />} />
                   <Route path="/places" element={<PlacesScreen />} />
+                  <Route path="/bookings" element={<UserBookingsScreen />} />
                 </Routes>
               </main>
               <Footer />

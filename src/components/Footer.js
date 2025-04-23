@@ -7,8 +7,8 @@ function Footer() {
   return (
     <footer className="footer">
       <Container>
-        <Row>
-          <Col md={4}>
+        <Row className="justify-content-between">
+          <Col md={3}>
             <h5>About Us</h5>
             <p>
               The Nepalese Hotel offers luxury accommodations with authentic Nepalese hospitality.
@@ -26,7 +26,7 @@ function Footer() {
               </a>
             </div>
           </Col>
-          <Col md={4}>
+          <Col md={3} className="text-center">
             <h5>Quick Links</h5>
             <ul className="footer-links">
               <li><Link to="/aboutus">About Us</Link></li>
@@ -35,7 +35,7 @@ function Footer() {
               <li><Link to="/terms">Terms & Conditions</Link></li>
             </ul>
           </Col>
-          <Col md={4}>
+          <Col md={3}>
             <h5>Contact Info</h5>
             <ul className="footer-contact">
               <li>

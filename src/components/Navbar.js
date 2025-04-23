@@ -85,13 +85,13 @@ function Navbar() {
                   >
                     Places
                   </Nav.Link>
-                  <Nav.Link 
+                  {/* <Nav.Link 
                     as={Link} 
                     to="/terms" 
                     className={`nav-link-custom ${isActive("/terms") ? "active-link" : ""}`}
                   >
                     Terms & Conditions
-                  </Nav.Link>
+                  </Nav.Link> */}
                 </>
               )}
               {!(userInfo && userInfo.isAdmin) && (

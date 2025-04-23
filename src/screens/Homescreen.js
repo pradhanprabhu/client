@@ -24,7 +24,7 @@ const Homescreen = () => {
 
   return (
     <div>
-      <Carousel className="hero-carousel" controls indicators interval={5000} pause={false}>
+      <Carousel className="hero-carousel" controls indicators interval={4000} pause={false}>
         {carouselItems.map((item, index) => (
           <Carousel.Item key={index}>
             <div

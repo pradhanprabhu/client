@@ -54,7 +54,7 @@ function PaymentScreen() {
         throw new Error('Invalid booking data');
       }
 
-      // First create the booking
+      // Create the booking with payment details
       const bookingDetails = {
         room: bookingData.room._id,
         checkIn: bookingData.checkIn,
@@ -62,7 +62,12 @@ function PaymentScreen() {
         totalAmount: Number(bookingData.totalAmount),
         totalDays: Number(bookingData.totalDays),
         guests: Number(bookingData.guests),
-        status: 'pending'
+        status: paymentDetails.paymentMethod === 'cash' ? 'pending' : 'confirmed',
+        paymentMethod: paymentDetails.paymentMethod,
+        paymentDetails: paymentDetails.paymentMethod === 'cash' ? {} : {
+          phoneNumber: paymentDetails.phoneNumber,
+          transactionId: paymentDetails.transactionId
+        }
       };
 
       console.log('Sending booking details:', bookingDetails);
@@ -81,49 +86,14 @@ function PaymentScreen() {
         throw new Error('Invalid response from server');
       }
 
-      // Create payment record
-      const paymentData = {
-        bookingId: newBooking._id,
-        amount: totalAmount,
-        paymentMethod: paymentDetails.paymentMethod,
-        status: paymentDetails.paymentMethod === 'cash' ? 'pending' : 'completed',
-        paymentDetails: paymentDetails.paymentMethod === 'cash' ? {} : {
-          phoneNumber: paymentDetails.phoneNumber,
-          transactionId: paymentDetails.transactionId
-        }
-      };
-      // Validate payment details based on payment method
-      if (paymentDetails.paymentMethod === 'esewa' || paymentDetails.paymentMethod === 'khalti') {
-        if (!paymentDetails.phoneNumber || !paymentDetails.transactionId) {
-          throw new Error(`Please fill in all ${paymentDetails.paymentMethod} payment details`);
-        }
-      }
-
-      // Send payment request to server
-      const { data } = await axios.post('/api/payments', paymentData, {
-        headers: {
-          'Authorization': `Bearer ${userInfo.token}`
-        }
-      });
-
-      // Update booking status
-      await axios.put(`/api/bookings/${newBooking._id}`, {
-        status: 'confirmed',
-        paymentId: data._id
-      }, {
-        headers: {
-          'Authorization': `Bearer ${userInfo.token}`
-        }
-      });
-
-      setSuccess('Payment successful! Redirecting to your bookings...');
+      setSuccess('Booking successful! Redirecting to your bookings...');
       
       // Navigate to bookings page after a short delay
       setTimeout(() => {
         navigate('/bookings');
       }, 1500);
     } catch (error) {
-      setError(error.response?.data?.message || error.message || 'Payment failed. Please try again.');
+      setError(error.response?.data?.message || error.message || 'Booking failed. Please try again.');
     } finally {
       setLoading(false);
     }
