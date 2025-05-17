@@ -1,9 +1,23 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Carousel } from 'react-bootstrap';
+import { Modal, Carousel, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import './RoomDetailsModal.css';
 
 const RoomDetailsModal = ({ show, handleClose, room }) => {
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if (!userInfo) {
+      // Store the current room ID in localStorage to redirect back after login
+      localStorage.setItem('bookingRoomId', room._id);
+      navigate('/login');
+    } else {
+      // If user is logged in, navigate directly to booking page with room data
+      navigate(`/book/${room._id}`, { state: { room } });
+    }
+  };
 
   const carouselItems = useMemo(() => 
     room?.images?.map((url, idx) => (
@@ -105,6 +119,18 @@ const RoomDetailsModal = ({ show, handleClose, room }) => {
           )}
         </div>
       </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        <Button 
+          variant="success" 
+          onClick={handleBookNow}
+          disabled={!room?.availability}
+        >
+          {room?.availability ? 'Book Now' : 'Not Available'}
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };

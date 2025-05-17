@@ -1,32 +1,50 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Alert, Button } from 'react-bootstrap';
+import './ContactUs.css';
 
 const ContactUs = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
     try {
-      const response = await axios.post('/api/contact/send', {
-        name,
-        email,
-        subject,
-        message,
-      });
+      const response = await axios.post('/api/contact/send', formData);
 
       if (response.data.success) {
-        alert('Message sent successfully!');
-        setName('');
-        setEmail('');
-        setSubject('');
-        setMessage('');
+        setSuccess('Message sent successfully!');
+        // Clear form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
       }
     } catch (error) {
-      alert('Failed to send message. Please try again.');
+      setError(error.response?.data?.message || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,15 +60,15 @@ const ContactUs = () => {
               <h3 className="card-title mb-4">Get in Touch</h3>
               <div className="mb-4">
                 <h5>Address</h5>
-                <p>📍 Thamel, Kathmandu, Nepal</p>
+                <p>📍 Fikkal, Ilam, Nepal</p>
               </div>
               <div className="mb-4">
                 <h5>Phone</h5>
-                <p>📞 +977-123456789</p>
+                <p>📞 +027-540398</p>
               </div>
               <div className="mb-4">
                 <h5>Email</h5>
-                <p>📧 prabhupradhan93@gmail.com</p>
+                <p>📧 nepalesehotel@gmail.com</p>
               </div>
               <div className="mb-4">
                 <h5>Business Hours</h5>
@@ -61,10 +79,12 @@ const ContactUs = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="col-md-6 mb-4">
+        <div className="col-md-6">
           <div className="card h-100">
             <div className="card-body">
               <h3 className="card-title mb-4">Send us a Message</h3>
+              {error && <Alert variant="danger">{error}</Alert>}
+              {success && <Alert variant="success">{success}</Alert>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">Name</label>
@@ -72,8 +92,9 @@ const ContactUs = () => {
                     type="text"
                     className="form-control"
                     id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -83,8 +104,9 @@ const ContactUs = () => {
                     type="email"
                     className="form-control"
                     id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -94,8 +116,9 @@ const ContactUs = () => {
                     type="text"
                     className="form-control"
                     id="subject"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -104,20 +127,28 @@ const ContactUs = () => {
                   <textarea
                     className="form-control"
                     id="message"
+                    name="message"
                     rows="5"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    value={formData.message}
+                    onChange={handleChange}
                     required
                   ></textarea>
                 </div>
-                <button type="submit" className="btn btn-primary">Send Message</button>
+                <Button 
+                  type="submit" 
+                  variant="primary" 
+                  className="w-100"
+                  disabled={loading}
+                >
+                  {loading ? 'Sending...' : 'Send Message'}
+                </Button>
               </form>
             </div>
           </div>
         </div>
 
         {/* Map */}
-        <div className="col-12">
+        <div className="col-12 mt-4">
           <div className="card">
             <div className="card-body p-0">
               <iframe

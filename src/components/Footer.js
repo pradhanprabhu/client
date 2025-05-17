@@ -40,15 +40,15 @@ function Footer() {
             <ul className="footer-contact">
               <li>
                 <i className="fas fa-map-marker-alt"></i>
-                Thamel, Kathmandu, Nepal
+                Fikkal, Ilam, Nepal
               </li>
               <li>
                 <i className="fas fa-phone"></i>
-                +977-123456789
+                +027-540398
               </li>
               <li>
                 <i className="fas fa-envelope"></i>
-                prabhupradhan93@gmail.com
+                nepalesehotel93@gmail.com
               </li>
               <li>
                 <i className="fas fa-clock"></i>

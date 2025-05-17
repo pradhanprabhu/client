@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, Table, Button, Modal, Form, Row, Col, Badge } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './AdminRooms.css';
+import { useNavigate } from 'react-router-dom';
 
 const AdminRooms = () => {
   const [roomImages, setRoomImages] = useState([]); // Store multiple image URLs
@@ -24,6 +25,15 @@ const AdminRooms = () => {
     capacity: '',
     amenities: ''
   });
+
+  const navigate = useNavigate();
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+  useEffect(() => {
+    if (!userInfo || !userInfo.isAdmin) {
+      navigate('/login');
+    }
+  }, [userInfo, navigate]);
 
   useEffect(() => {
     fetchRooms();
@@ -84,10 +94,21 @@ const AdminRooms = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this room?')) {
       try {
-        await axios.delete(`/api/rooms/${id}`);
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (!userInfo || !userInfo.token) {
+          alert('Please log in to delete rooms');
+          return;
+        }
+
+        await axios.delete(`/api/rooms/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${userInfo.token}`
+          }
+        });
         fetchRooms();
       } catch (error) {
         console.error('Error deleting room:', error);
+        alert(error.response?.data?.message || "Failed to delete room. Please make sure you have admin privileges.");
       }
     }
   };

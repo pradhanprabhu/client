@@ -183,4 +183,31 @@ body {
   background-color: #c0392b;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart Card Styles */
+.chart-card {
+  background: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  margin-bottom: 1rem;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.chart-card .card-body {
+  padding: 1.5rem;
+}
+
+/* Responsive Chart Styles */
+@media (max-width: 768px) {
+  .chart-card {
+    margin-bottom: 1rem;
+  }
 } 

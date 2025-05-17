@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, Table, Button, Modal, Form } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -17,7 +18,14 @@ const AdminBookings = () => {
     status: 'pending'
   });
 
+  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+  useEffect(() => {
+    if (!userInfo || !userInfo.isAdmin) {
+      navigate('/login');
+    }
+  }, [userInfo, navigate]);
 
   useEffect(() => {
     fetchBookings();
@@ -71,18 +79,18 @@ const AdminBookings = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleDeleteBooking = async (bookingId) => {
     if (window.confirm('Are you sure you want to delete this booking?')) {
       try {
-        await axios.delete(`/api/bookings/${id}`, {
+        const config = {
           headers: {
-            'Authorization': `Bearer ${userInfo.token}`
+            Authorization: `Bearer ${userInfo.token}`
           }
-        });
-        fetchBookings();
+        };
+        await axios.delete(`/api/bookings/${bookingId}`, config);
+        setBookings(bookings.filter(booking => booking._id !== bookingId));
       } catch (error) {
-        setError(error.response?.data?.message || 'Error deleting booking');
-        console.error('Error deleting booking:', error);
+        setError(error.response?.data?.message || 'Failed to delete booking');
       }
     }
   };
@@ -116,14 +124,7 @@ const AdminBookings = () => {
   };
 
   if (!userInfo || !userInfo.isAdmin) {
-    return (
-      <Container className="py-5">
-        <div className="text-center">
-          <h2>Access Denied</h2>
-          <p>You must be an admin to view this page.</p>
-        </div>
-      </Container>
-    );
+    return null;
   }
 
   return (
@@ -165,8 +166,8 @@ const AdminBookings = () => {
               <td>{booking.guests || 'N/A'}</td>
               <td>Rs. {booking.totalAmount}</td>
               <td>
-                <span className={`badge ${booking.status === 'confirmed' ? 'bg-success' : 'bg-danger'}`}>
-                  {booking.status === 'confirmed' ? 'PAID' : 'PENDING'}
+                <span className={`badge ${booking.status === 'confirmed' ? 'bg-success' : booking.status === 'cancelled' ? 'bg-secondary' : 'bg-danger'}`}>
+                  {booking.status === 'confirmed' ? 'PAID' : booking.status === 'cancelled' ? 'CANCELLED' : 'PENDING'}
                 </span>
               </td>
               <td>
@@ -181,9 +182,9 @@ const AdminBookings = () => {
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => handleDelete(booking._id)}
+                  onClick={() => handleDeleteBooking(booking._id)}
                 >
-                  <FaTrash />
+                  <FaTrash /> Delete
                 </Button>
               </td>
             </tr>

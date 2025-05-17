@@ -1,6 +1,9 @@
 .login-screen {
-  background-color: #f8f9fa;
   min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 2rem 0;
 }
 
 .login-card {
@@ -12,12 +15,18 @@
 
 .login-card h2 {
   color: #333;
-  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #555;
 }
 
 .form-control {
-  border-radius: 5px;
   padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .form-control:focus {
@@ -28,16 +37,46 @@
 .btn-primary {
   padding: 0.75rem;
   font-weight: 500;
-  border-radius: 5px;
+  background-color: #007bff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-primary:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 
 .text-primary {
   color: #007bff !important;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .text-primary:hover {
+  color: #0056b3 !important;
   text-decoration: underline;
+}
+
+.alert {
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
 }
 
 @media (max-width: 768px) {

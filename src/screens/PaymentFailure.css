@@ -1,0 +1,33 @@
+.payment-failure-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.failure-card {
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.failure-icon {
+  font-size: 4rem;
+  color: #dc3545;
+  margin-bottom: 1rem;
+}
+
+.failure-card h2 {
+  color: #dc3545;
+  margin-bottom: 1rem;
+}
+
+.failure-card p {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.button-group {
+  margin-top: 2rem;
+} 

@@ -1,0 +1,66 @@
+.admin-payments-container {
+  padding: 20px;
+}
+
+.admin-payments-header {
+  margin-bottom: 30px;
+}
+
+.admin-payments-header h1 {
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.table-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.payment-details {
+  padding: 20px;
+}
+
+.payment-details p {
+  margin-bottom: 10px;
+}
+
+.payment-details strong {
+  color: #555;
+  margin-right: 10px;
+}
+
+.badge {
+  padding: 6px 12px;
+  font-weight: 500;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-sm i {
+  margin-right: 4px;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #dee2e6;
+} 

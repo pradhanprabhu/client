@@ -44,6 +44,11 @@
   color: white;
 }
 
+.payment-method.mastercard {
+  background-color: #ff5f00;
+  color: white;
+}
+
 .table th {
   background-color: #f8f9fa;
   font-weight: 600;

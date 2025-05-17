@@ -1,7 +1,6 @@
 .payment-screen {
-  min-height: calc(100vh - 70px);
+  min-height: 100vh;
   background-color: #f8f9fa;
-  padding: 2rem 0;
 }
 
 .payment-methods {
@@ -13,14 +12,14 @@
 .payment-method-option {
   flex: 1;
   padding: 1rem;
-  border: 2px solid #dee2e6;
+  border: 2px solid #007bff;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .payment-method-option:hover {
-  border-color: #007bff;
+  border-color: #e4e7ea;
   background-color: #f8f9fa;
 }
 
@@ -90,7 +89,7 @@
 }
 
 .form-control:focus {
-  border-color: #007bff;
+  border-color: #80bdff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
@@ -120,17 +119,66 @@
   border-radius: 8px;
 }
 
-@media (max-width: 768px) {
-  .payment-screen {
-    padding: 1rem 0;
-  }
+/* Payment method tabs: all blue with white text, hover effect for non-active */
+.nav-pills .nav-link {
+  color: #fff !important;
+  background-color: #007bff !important;
+  border: 1px solid #007bff !important;
+  transition: background 0.2s, color 0.2s;
+}
 
-  .payment-form-card,
-  .payment-summary-card {
-    margin-bottom: 1rem;
+/* Add spacing between payment method tabs */
+.nav-pills .nav-item {
+  margin-right: 0.5rem;
+}
+
+.nav-pills .nav-item:last-child {
+  margin-right: 0;
+}
+
+.nav-pills .nav-link.active {
+  color: #fff !important;
+  background-color: #0056b3 !important;
+  border-color: #0056b3 !important;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+  background-color: #0056b3 !important;
+  color: #fff !important;
+  border-color: #0056b3 !important;
+  cursor: pointer;
+}
+
+/* Payment Form Styling */
+.payment-options {
+  padding: 1rem 0;
+}
+
+.booking-summary-card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.booking-details p {
+  margin-bottom: 0.5rem;
+}
+
+.total-amount {
+  font-size: 1.2rem;
+  color: #28a745;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .booking-summary-card {
+    margin-top: 1rem;
+  }
+  
+  .nav-pills .nav-link {
+    margin-bottom: 0.5rem;
   }
 
   .room-image {
     height: 150px;
   }
 } 
+

@@ -23,7 +23,7 @@ const BookingScreen = () => {
     }
   }, [room, navigate]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     const { name, value } = e.target;
     
     if (name === 'guests') {
@@ -51,6 +51,21 @@ const BookingScreen = () => {
       return;
     }
 
+    // Check room availability when check-in date is selected
+    if (name === 'checkIn') {
+      try {
+        const response = await axios.get(`/api/rooms/${roomData._id}/availability?date=${value}`);
+        if (!response.data.available) {
+          setError('This room is already booked for the selected date. Please choose a different date.');
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking room availability:', error);
+        setError('Error checking room availability. Please try again.');
+        return;
+      }
+    }
+
     setBookingData(prev => ({
       ...prev,
       [name]: value
@@ -68,7 +83,7 @@ const BookingScreen = () => {
 
   const calculateTotalAmount = () => {
     const totalDays = calculateTotalDays();
-    return totalDays * room.rentperday;
+    return totalDays * (roomData?.price || 0);
   };
 
   const handleSubmit = async (e) => {
@@ -272,16 +287,16 @@ const BookingScreen = () => {
               <h3 className="mb-4">Booking Summary</h3>
               <div className="room-details mb-4">
                 <img 
-                  src={room.images?.[0] || 'https://via.placeholder.com/300x200'} 
-                  alt={room.name} 
+                  src={roomData?.images?.[0] || 'https://via.placeholder.com/300x200'} 
+                  alt={roomData?.name} 
                   className="room-image mb-3"
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = 'https://via.placeholder.com/300x200';
                   }}
                 />
-                <h4>{room.name}</h4>
-                <p className="text-muted">{room.type}</p>
+                <h4>{roomData?.name}</h4>
+                <p className="text-muted">{roomData?.type}</p>
               </div>
 
               <div className="booking-summary mt-4">
@@ -289,7 +304,7 @@ const BookingScreen = () => {
                 <div className="booking-details p-3 bg-light rounded">
                   <p className="mb-2"><strong>Duration:</strong> {calculateTotalDays()} days</p>
                   <p className="mb-2"><strong>Guests:</strong> {bookingData.guests} person(s)</p>
-                  <p className="mb-3"><strong>Price per day:</strong> Rs. {room.rentperday}</p>
+                  <p className="mb-3"><strong>Price per day:</strong> Rs. {roomData?.price || 0}</p>
                   <hr />
                   <div className="d-flex justify-content-between total mt-2">
                     <strong>Total Amount:</strong>

@@ -26,7 +26,7 @@ function UserBookingsScreen() {
           }
         };
 
-        const { data } = await axios.get('/api/bookings', config);
+        const { data } = await axios.get('/api/bookings?populate=payment', config);
         setBookings(data);
         setLoading(false);
       } catch (error) {
@@ -38,7 +38,7 @@ function UserBookingsScreen() {
     fetchBookings();
   }, [navigate, userInfo]);
 
-  const handleCancelBooking = async (bookingId) => {
+  const handleCancelBooking = async (booking) => {
     if (window.confirm('Are you sure you want to cancel this booking?')) {
       try {
         const config = {
@@ -46,17 +46,36 @@ function UserBookingsScreen() {
             Authorization: `Bearer ${userInfo.token}`
           }
         };
-
-        await axios.put(`/api/bookings/${bookingId}/cancel`, {}, config);
         
-        // Update the bookings list
-        setBookings(bookings.map(booking => 
-          booking._id === bookingId 
-            ? { ...booking, status: 'cancelled' }
-            : booking
+        if (!booking.paymentId) {
+          setError('Payment information not found. Please contact support.');
+          return;
+        }
+
+        await axios.put(`/api/payments/${booking.paymentId}/cancel`, {}, config);
+        setBookings(bookings.map(b =>
+          b._id === booking._id
+            ? { ...b, status: 'cancelled' }
+            : b
         ));
       } catch (error) {
         setError(error.response?.data?.message || 'Failed to cancel booking');
+      }
+    }
+  };
+
+  const handleDeleteBooking = async (bookingId) => {
+    if (window.confirm('Are you sure you want to delete this booking?')) {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`
+          }
+        };
+        await axios.delete(`/api/bookings/${bookingId}`, config);
+        setBookings(bookings.filter(booking => booking._id !== bookingId));
+      } catch (error) {
+        setError(error.response?.data?.message || 'Failed to delete booking');
       }
     }
   };
@@ -111,7 +130,7 @@ function UserBookingsScreen() {
                 <td>Rs. {booking.totalAmount}</td>
                 <td>
                   <span className={`status-badge ${booking.status}`}>
-                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                    {booking.status === 'cancelled' ? 'Cancelled' : booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                   </span>
                 </td>
                 <td>
@@ -119,19 +138,19 @@ function UserBookingsScreen() {
                     {booking.paymentMethod === 'cash' ? 'Cash on Arrival' : 
                      booking.paymentMethod === 'esewa' ? 'eSewa' : 
                      booking.paymentMethod === 'khalti' ? 'Khalti' : 
+                     booking.paymentMethod === 'mastercard' ? 'Mastercard' : 
                      'N/A'}
                   </span>
                 </td>
                 <td>
-                  {booking.status === 'pending' && (
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleCancelBooking(booking._id)}
-                    >
-                      Cancel
-                    </Button>
-                  )}
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleCancelBooking(booking)}
+                    disabled={booking.status === 'cancelled'}
+                  >
+                    Cancel
+                  </Button>
                 </td>
               </tr>
             ))}

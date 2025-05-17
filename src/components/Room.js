@@ -14,31 +14,13 @@ function Room({ room }) {
   const handleBookNow = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     if (!userInfo) {
-      alert('Please login to book a room');
+      // Store the current room ID in localStorage to redirect back after login
+      localStorage.setItem('bookingRoomId', room._id);
       navigate('/login');
-      return; 
+    } else {
+      // If user is logged in, navigate directly to booking page with room data
+      navigate(`/book/${room._id}`, { state: { room } });
     }
-    
-    // Ensure all required room data is available
-    if (!room || !room._id || !room.price) {
-      alert('Room information is incomplete');
-      return;
-    }
-
-    // Pass complete room data
-    navigate(`/book/${room._id}`, { 
-      state: { 
-        room: {
-          _id: room._id,
-          name: room.name,
-          type: room.type,
-          rentperday: room.price,
-          capacity: room.capacity,
-          description: room.description,
-          images: room.images
-        } 
-      }
-    });
   };
 
   // Default image if no images are available
@@ -91,5 +73,3 @@ function Room({ room }) {
 }
 
 export default Room;
-
-

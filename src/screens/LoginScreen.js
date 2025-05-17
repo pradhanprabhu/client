@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import './LoginScreen.css';
 
 function LoginScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -38,16 +39,33 @@ function LoginScreen() {
         localStorage.setItem('token', user.token);
         setSuccess('Login successful!');
 
-        setTimeout(() => {
-          if (user.isAdmin) {
-            navigate('/admin');
-          } else {
-            navigate('/');
+        // Check if there's a booking room ID stored
+        const bookingRoomId = localStorage.getItem('bookingRoomId');
+        if (bookingRoomId) {
+          localStorage.removeItem('bookingRoomId'); // Clear the stored ID
+          try {
+            const { data } = await axios.get(`/api/rooms/${bookingRoomId}`);
+            navigate(`/book/${bookingRoomId}`, { state: { room: data } });
+          } catch (error) {
+            setError('Failed to fetch room details. Please try again.');
+            navigate('/rooms');
           }
-        }, 1500);
+        } else {
+          setTimeout(() => {
+            // Check if there's a return URL from protected route
+            const from = location.state?.from?.pathname || '/';
+            if (user.isAdmin && from.startsWith('/admin')) {
+              navigate(from);
+            } else if (user.isAdmin) {
+              navigate('/admin');
+            } else {
+              navigate('/');
+            }
+          }, 1500);
+        }
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Invalid email or password');
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -84,8 +84,16 @@ const Homescreen = () => {
             <Col md={6} className="mb-4 mb-md-0">
               <h2>About Nepalese Hotel</h2>
               <p>
-                Experience the perfect blend of traditional Nepalese hospitality and modern luxury at our hotel.
-                Located in the heart of Nepal, we offer stunning views, world-class amenities, and unforgettable experiences.
+                Nestled in a vibrant urban setting, Nepalese Hotel offers a perfect blend of modern comfort and 
+                traditional charm, making it a welcoming retreat for travelers from all walks of life. Designed with subtle Himalayan
+                influences and warm Nepali hospitality, the hotel provides guests with a serene atmosphere amid the hustle and bustle
+                of the city. Each room is thoughtfully furnished, combining contemporary design with cultural elements, ensuring a relaxing
+                and culturally enriching stay.Guests at Nepalese Hotel can enjoy a wide range of amenities, including complimentary Wi-Fi, an 
+                in-house restaurant serving authentic Nepali and international cuisine, and a rooftop terrace offering panoramic views of the city skyline.
+                The hotel's location is ideal for both business and leisure travelers, with key attractions, shopping areas, and transportation hubs just a short
+                distance away. Whether you're visiting for a short city break or an extended stay, the dedicated staff ensures personalized service and a memorable experience.
+                With a focus on comfort, cleanliness, and cultural immersion, Nepalese Hotel stands out as a top choice for those seeking a peaceful yet connected place to stay.
+                 Experience the warmth of Nepalese hospitality in a setting that feels just like home—only more indulgent
               </p>
               <Link to="/aboutus">
                 <Button variant="outline-warning">Learn More</Button>

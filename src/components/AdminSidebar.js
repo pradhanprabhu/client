@@ -39,6 +39,10 @@ const AdminSidebar = () => {
             <i className="fas fa-users me-2"></i>
             Users
           </Nav.Link>
+          <Nav.Link as={Link} to="/admin/payments" className="sidebar-link">
+            <i className="fas fa-money-bill-wave me-2"></i>
+            Payments
+          </Nav.Link>
         </Nav>
         <div className="sidebar-footer">
           <div className="user-info">
