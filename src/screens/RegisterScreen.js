@@ -22,7 +22,6 @@ function RegisterScreen() {
     const hasNumbers = /\d/.test(pass);
     const hasSpecialChar = /[@$!%*?&]/.test(pass);
     const hasMinLength = pass.length >= 8;
-
     return hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && hasMinLength;
   };
 
@@ -44,6 +43,20 @@ function RegisterScreen() {
 
     if (!trimmedName || !trimmedEmail || !trimmedPassword || !trimmedConfirmPassword || !trimmedPhone) {
       setError('All fields are required and cannot contain only whitespace');
+      setLoading(false);
+      return;
+    }
+
+    // ✅ Full name validation
+    if (trimmedName.length < 3) {
+      setError('Full name must be at least 3 characters long');
+      setLoading(false);
+      return;
+    }
+
+    const namePattern = /^[A-Za-z\s]+$/;
+    if (!namePattern.test(trimmedName)) {
+      setError('Full name must contain only letters and spaces, and must not contain numbers or special characters');
       setLoading(false);
       return;
     }
@@ -97,6 +110,7 @@ function RegisterScreen() {
                 {error && <Alert variant="danger">{error}</Alert>}
                 {success && <Alert variant="success">{success}</Alert>}
                 <Form onSubmit={handleSubmit}>
+                  {/* ✅ Full Name */}
                   <Form.Group className="mb-3">
                     <Form.Label>Full Name</Form.Label>
                     <Form.Control
@@ -105,9 +119,13 @@ function RegisterScreen() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
+                      minLength={3}
+                      pattern="^[A-Za-z\s]+$"
+                      title="Full name must be at least 3 letters and must not contain numbers or special characters"
                     />
                   </Form.Group>
 
+                  {/* Email */}
                   <Form.Group className="mb-3">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
@@ -121,6 +139,7 @@ function RegisterScreen() {
                     />
                   </Form.Group>
 
+                  {/* Password */}
                   <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
@@ -136,6 +155,7 @@ function RegisterScreen() {
                     </Form.Text>
                   </Form.Group>
 
+                  {/* Confirm Password */}
                   <Form.Group className="mb-4">
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
@@ -147,6 +167,7 @@ function RegisterScreen() {
                     />
                   </Form.Group>
 
+                  {/* Phone Number */}
                   <Form.Group className="mb-3">
                     <Form.Label>Phone Number</Form.Label>
                     <Form.Control

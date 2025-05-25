@@ -33,6 +33,7 @@ function Footer() {
               <li><Link to="/rooms">Rooms</Link></li>
               <li><Link to="/places">Places</Link></li>
               <li><Link to="/terms">Terms & Conditions</Link></li>
+              <li><Link to="/home">Home</Link></li>
             </ul>
           </Col>
           <Col md={3}>

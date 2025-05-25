@@ -1,0 +1,29 @@
+.status-badge {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+.status-badge.paid {
+  background: #22c55e;
+}
+.status-badge.cancelled {
+  background: #ef4444;
+}
+.status-badge.pending {
+  background: #facc15;
+  color: #333;
+}
+.status-badge.method-mastercard {
+  background: #14532d;
+}
+.status-badge.method-khalti {
+  background: #7c3aed;
+}
+.status-badge.method-cash {
+  background: #64748b;
+} 

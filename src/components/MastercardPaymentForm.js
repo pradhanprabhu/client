@@ -15,7 +15,7 @@ function MastercardPaymentForm({ amount, onSuccess, onError, loading }) {
   const testCard = {
     type: 'Mastercard',
     number: '5555 5555 5555 4444',
-    holder: 'JOHN DOE',
+    holder: 'Prabhu Pradhan',
     expiry: '12/25',
     cvv: '123'
   };
@@ -45,6 +45,17 @@ function MastercardPaymentForm({ amount, onSuccess, onError, loading }) {
     // Expiry date validation (MM/YY format)
     if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(formData.expiryDate)) {
       newErrors.expiryDate = 'Expiry date must be in MM/YY format';
+    } else {
+      // Check if the expiry date is in the past
+      const [month, year] = formData.expiryDate.split('/');
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits of year
+      const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
+
+      if (parseInt(year) < currentYear || 
+          (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+        newErrors.expiryDate = 'Card has expired';
+      }
     }
 
     // CVV validation (3-4 digits)
@@ -93,7 +104,18 @@ function MastercardPaymentForm({ amount, onSuccess, onError, loading }) {
     if (name === 'expiryDate') {
       formattedValue = value
         .replace(/\D/g, '')
-        .replace(/(\d{2})(\d{0,2})/, '$1/$2')
+        .replace(/(\d{2})(\d{0,2})/, (match, month, year) => {
+          // Validate month is between 01-12
+          const monthNum = parseInt(month);
+          if (monthNum > 12) {
+            month = '12';
+          } else if (monthNum < 1) {
+            month = '01';
+          } else {
+            month = month.padStart(2, '0');
+          }
+          return `${month}/${year}`;
+        })
         .substring(0, 5);
     }
 
@@ -105,26 +127,6 @@ function MastercardPaymentForm({ amount, onSuccess, onError, loading }) {
 
   return (
     <div>
-      {testMode && (
-        <Card className="mb-3 bg-light">
-          <Card.Body>
-            <h5 className="mb-3">Test Card</h5>
-            <div className="d-flex flex-wrap gap-2">
-              <Button
-                variant="outline-primary"
-                size="sm"
-                onClick={fillTestData}
-              >
-                Fill Test Card Details
-              </Button>
-            </div>
-            <small className="text-muted mt-2 d-block">
-              This is a test card number and will not work for real transactions.
-            </small>
-          </Card.Body>
-        </Card>
-      )}
-
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Card Number</Form.Label>
@@ -149,7 +151,7 @@ function MastercardPaymentForm({ amount, onSuccess, onError, loading }) {
             name="cardHolder"
             value={formData.cardHolder}
             onChange={handleInputChange}
-            placeholder="JOHN DOE"
+            placeholder="Prabhu Pradhan"
             isInvalid={!!errors.cardHolder}
           />
           <Form.Control.Feedback type="invalid">

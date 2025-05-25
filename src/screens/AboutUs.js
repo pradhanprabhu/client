@@ -11,7 +11,7 @@ function AboutUs() {
         <Container>
           <div className="hero-content text-center text-white">
             <h1>Our Story</h1>
-            <p className="lead">A Legacy of Excellence Since 1990</p>
+            <p className="lead">A Legacy of Excellence Since 2006</p>
           </div>
         </Container>
       </section>
@@ -72,27 +72,23 @@ function AboutUs() {
                 hospitality in Nepal for over three decades.
               </p>
               <p>
-                What started as a small family-owned establishment has grown into one of 
-                Nepal's most prestigious hotels. Our journey is marked by continuous 
+                Started as a small family-owned establishment has grown into one of 
+                Ilam,s most prestigious hotels. Our journey is marked by continuous 
                 innovation, unwavering commitment to service excellence, and deep respect 
                 for our cultural heritage.
               </p>
               <div className="milestones mt-4">
                 <div className="milestone-item">
-                  <span className="year">1990</span>
+                  <span className="year">2005</span>
                   <span className="event">Hotel Establishment</span>
                 </div>
                 <div className="milestone-item">
-                  <span className="year">2005</span>
-                  <span className="event">First Luxury Wing Opening</span>
+                  <span className="year">2010</span>
+                  <span className="event">Rennovation</span>
                 </div>
                 <div className="milestone-item">
-                  <span className="year">2015</span>
-                  <span className="event">Heritage Wing Launch</span>
-                </div>
-                <div className="milestone-item">
-                  <span className="year">2020</span>
-                  <span className="event">30th Anniversary Celebration</span>
+                  <span className="year">2025</span>
+                  <span className="event">20th Anniversary Celebration</span>
                 </div>
               </div>
             </Col>
@@ -154,7 +150,7 @@ function AboutUs() {
               <Card className="team-card">
                 <Card.Img 
                   variant="top" 
-                  src="https://scontent.fktm17-1.fna.fbcdn.net/v/t39.30808-6/481670689_2081867788948222_2613998384074175959_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=v9dq5_j6x0QQ7kNvgGcQY7B&_nc_oc=AdlN0BBDxCPju6ngfmKuq-TSI4c472Io-7SgC0D6i3O6kJnuMJiHwyVBp0CDqyYr9SSy96dlnos0TV6LboRJ9fM1&_nc_zt=23&_nc_ht=scontent.fktm17-1.fna&_nc_gid=VIecbSTbQvqLjvncJLpNIA&oh=00_AYG4xK9LcLBT2DLL_3tdPSV3QXUq6jjrE-Yqi-lfwpCCyw&oe=67EEF47E"
+                  src="https://res.cloudinary.com/dpblvtdry/image/upload/v1747852799/me_gdpnfu.jpg"
                 />
                 <Card.Body className="text-center">
                   <h4>Prabhu Pradhan</h4>
@@ -166,8 +162,8 @@ function AboutUs() {
               <Card className="team-card">
                 <Card.Img 
                   variant="top" 
-                  src="https://scontent.fktm17-1.fna.fbcdn.net/v/t39.30808-6/481776596_1385647846143454_5906989994570467601_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=j6CX-Me2ph0Q7kNvgFqrpUn&_nc_oc=AdmDHkALKVmnF33gNJIS8_PB7Pm89X7h2qaPndFpsD7TuTGZLR0-y6J4Pudu7aQX4fbv2Z2xJnN4OvEpUZNVs4Cv&_nc_zt=23&_nc_ht=scontent.fktm17-1.fna&_nc_gid=rAyAcsbjrHvKeReq8j0TQA&oh=00_AYFJQTukcXcaxpyAXA1k9bNiclMu39kuMEvI-_GtElEXHw&oe=67EEF4C6"
-                />
+                  src="https://res.cloudinary.com/dpblvtdry/image/upload/v1747852481/mummy_v2vlcm.jpg"
+                  />
                 <Card.Body className="text-center">
                   <h4>Gita Pradhan</h4>
                   <p className="text-muted">Operations Director</p>
@@ -178,7 +174,7 @@ function AboutUs() {
               <Card className="team-card">
                 <Card.Img 
                   variant="top" 
-                  src="https://scontent.fktm17-1.fna.fbcdn.net/v/t1.6435-9/69884353_2649344891783102_7355625986869690368_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=n2Lbqk9MSQ8Q7kNvgG1mrJB&_nc_oc=AdnxvfxuaWPxCXVaHMNMhd9oBymT8JoNo4SdlTK8nXbYePnNvXNxXr8ECYNyO3dEdkanUZX9YvxTaAhrWoZ67Il3&_nc_zt=23&_nc_ht=scontent.fktm17-1.fna&_nc_gid=Cy3TFNkJWEgnhi0RMhhYug&oh=00_AYHkK_meezYepC3bkO0cQplQFAridTSERgZgEzCZV5BR-Q&oe=6810705D"
+                  src="https://res.cloudinary.com/dpblvtdry/image/upload/v1747852931/Baba_hcqtfu.jpg"
                 />
                 <Card.Body className="text-center">
                   <h4>Bimal Pradhan</h4>

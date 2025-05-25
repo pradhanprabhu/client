@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Table, Button, Modal, Form } from 'react-bootstrap';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { Container, Table, Button, Modal, Form, Tabs, Tab } from 'react-bootstrap';
+import { FaEdit, FaTrash, FaCreditCard, FaMoneyBillWave, FaWallet } from 'react-icons/fa';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import './AdminBookings.css';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -17,6 +18,8 @@ const AdminBookings = () => {
     guests: 1,
     status: 'pending'
   });
+  const [searchName, setSearchName] = useState("");
+  const [searchDate, setSearchDate] = useState("");
 
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -35,32 +38,22 @@ const AdminBookings = () => {
     try {
       setLoading(true);
       setError('');
-      console.log('Fetching bookings...');
-      
-      // Check if user is logged in and has a token
       if (!userInfo || !userInfo.token) {
         setError('Please log in to view bookings');
         return;
       }
-
       const { data } = await axios.get('http://localhost:5000/api/bookings/admin', {
         headers: {
           'Authorization': `Bearer ${userInfo.token}`
         }
       });
-      console.log('Received bookings:', data);
       setBookings(data);
     } catch (error) {
-      console.error('Error fetching bookings:', error);
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         setError(error.response.data.message || 'Error fetching bookings');
       } else if (error.request) {
-        // The request was made but no response was received
         setError('No response from server. Please try again later.');
       } else {
-        // Something happened in setting up the request that triggered an Error
         setError('Error setting up request. Please try again.');
       }
     } finally {
@@ -109,7 +102,6 @@ const AdminBookings = () => {
       fetchBookings();
     } catch (error) {
       setError(error.response?.data?.message || 'Error updating booking');
-      console.error('Error updating booking:', error);
     } finally {
       setLoading(false);
     }
@@ -127,58 +119,63 @@ const AdminBookings = () => {
     return null;
   }
 
-  return (
-    <Container className="mt-4">
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
-      )}
-      
-      <h2>Manage Bookings</h2>
-      
-      {loading ? (
-        <div className="text-center mt-4">
-          <h3>Loading bookings...</h3>
-        </div>
-      ) : (
-        <>
-          <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Room</th>
-            <th>Guest</th>
-            <th>Check In</th>
-            <th>Check Out</th>
-            <th>Guests</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bookings.map((booking) => (
-            <tr key={booking._id}>
-              <td>{booking.room?.name || 'N/A'}</td>
-              <td>{booking.user?.name || 'N/A'}</td>
-              <td>{moment(booking.checkIn).format('YYYY-MM-DD')}</td>
-              <td>{moment(booking.checkOut).format('YYYY-MM-DD')}</td>
-              <td>{booking.guests || 'N/A'}</td>
-              <td>Rs. {booking.totalAmount}</td>
-              <td>
-                <span className={`badge ${booking.status === 'confirmed' ? 'bg-success' : booking.status === 'cancelled' ? 'bg-secondary' : 'bg-danger'}`}>
-                  {booking.status === 'confirmed' ? 'PAID' : booking.status === 'cancelled' ? 'CANCELLED' : 'PENDING'}
-                </span>
-              </td>
-              <td>
-                <Button
-                  variant="info"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => handleEdit(booking)}
-                >
-                  <FaEdit />
-                </Button>
+  // Filter bookings by guest name and check-in date
+  const filteredBookings = bookings.filter(booking => {
+    const nameMatch = booking.user?.name?.toLowerCase().includes(searchName.toLowerCase());
+    const dateMatch = searchDate ? moment(booking.checkIn).format('YYYY-MM-DD') === searchDate : true;
+    return nameMatch && dateMatch;
+  });
+
+  // Use filteredBookings instead of bookings for tab filters
+  const pendingBookings = filteredBookings.filter(booking => booking.status === 'pending');
+  const paidBookings = filteredBookings.filter(booking => booking.status === 'confirmed');
+  const cancelledBookings = filteredBookings.filter(booking => booking.status === 'cancelled');
+
+  const renderBookingTable = (filteredBookings, tabType) => (
+    <Table striped bordered hover responsive>
+      <thead>
+        <tr>
+          <th>Room</th>
+          <th>Guest</th>
+          <th>Check In</th>
+          <th>Check Out</th>
+          <th>Guests</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredBookings.map((booking) => (
+          <tr key={booking._id}>
+            <td>{booking.room?.name || 'N/A'}</td>
+            <td>{booking.user?.name || 'N/A'}</td>
+            <td>{moment(booking.checkIn).format('YYYY-MM-DD')}</td>
+            <td>{moment(booking.checkOut).format('YYYY-MM-DD')}</td>
+            <td>{booking.guests || 'N/A'}</td>
+            <td>Rs. {booking.totalAmount}</td>
+            <td>
+              {booking.status === 'confirmed' && (
+                <span className="status-badge paid">PAID</span>
+              )}
+              {booking.status === 'pending' && (
+                <span className="status-badge pending">PENDING</span>
+              )}
+              {booking.status === 'cancelled' && (
+                <span className="status-badge cancelled">CANCELLED</span>
+              )}
+              {booking.paymentMethod === 'mastercard' && (
+                <span className="status-badge method-mastercard">MASTERCARD</span>
+              )}
+              {booking.paymentMethod === 'khalti' && (
+                <span className="status-badge method-khalti">KHALTI</span>
+              )}
+              {booking.paymentMethod === 'cash' && (
+                <span className="status-badge method-cash">CASH</span>
+              )}
+            </td>
+            <td>
+              {tabType === 'cancelled' ? (
                 <Button
                   variant="danger"
                   size="sm"
@@ -186,12 +183,85 @@ const AdminBookings = () => {
                 >
                   <FaTrash /> Delete
                 </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+              ) : (
+                <>
+                  <Button
+                    variant="info"
+                    size="sm"
+                    className="me-2"
+                    onClick={() => handleEdit(booking)}
+                  >
+                    <FaEdit />
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleDeleteBooking(booking._id)}
+                  >
+                    <FaTrash /> Delete
+                  </Button>
+                </>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
 
+  return (
+    <Container className="mt-4">
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
+      <h2>Manage Bookings</h2>
+      {loading ? (
+        <div className="text-center mt-4">
+          <h3>Loading bookings...</h3>
+        </div>
+      ) : (
+        <>
+          <div className="mb-3 d-flex gap-2 align-items-center">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by guest name"
+              value={searchName}
+              onChange={e => setSearchName(e.target.value)}
+              style={{ maxWidth: 200 }}
+            />
+            <input
+              type="date"
+              className="form-control"
+              value={searchDate}
+              onChange={e => setSearchDate(e.target.value)}
+              style={{ maxWidth: 180 }}
+            />
+          </div>
+          <Tabs defaultActiveKey="paid" className="mb-4 booking-tabs">
+            <Tab eventKey="paid" title={<span style={{color: 'black', fontWeight: 'bold'}}>Paid ({paidBookings.length})</span>}>
+              <div className="tab-content">
+                <h3 className="tab-title">Paid Bookings</h3>
+                {renderBookingTable(paidBookings, 'paid')}
+              </div>
+            </Tab>
+            <Tab eventKey="pending" title={<span style={{color: 'black', fontWeight: 'bold'}}>Pending ({pendingBookings.length})</span>}>
+              <div className="tab-content">
+                <h3 className="tab-title">Pending Bookings</h3>
+                {renderBookingTable(pendingBookings, 'pending')}
+              </div>
+            </Tab>
+            <Tab eventKey="cancelled" title={<span style={{color: 'black', fontWeight: 'bold'}}>Cancelled ({cancelledBookings.length})</span>}>
+              <div className="tab-content">
+                <h3 className="tab-title">Cancelled Bookings</h3>
+                {renderBookingTable(cancelledBookings, 'cancelled')}
+              </div>
+            </Tab>
+          </Tabs>
+        </>
+      )}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Booking</Modal.Title>
@@ -238,18 +308,18 @@ const AdminBookings = () => {
                 required
               >
                 <option value="pending">Pending</option>
-                <option value="confirmed">Paid</option>
+                <option value="confirmed">Confirmed</option>
+                {editingBooking && editingBooking.status === 'cancelled' && (
+                  <option value="cancelled">Cancelled</option>
+                )}
               </Form.Select>
             </Form.Group>
-
-            <Button variant="primary" type="submit" className="mt-3">
+            <Button variant="primary" type="submit">
               Save Changes
             </Button>
           </Form>
         </Modal.Body>
-          </Modal>
-        </>
-      )}
+      </Modal>
     </Container>
   );
 };

@@ -23,7 +23,7 @@ function Place({ place }) {
           <Card.Title>{place.name || 'Unnamed Place'}</Card.Title>
           <Card.Text>{(place.description || '').substring(0, 100)}...</Card.Text>
           <Card.Text className="text-muted">
-            <i className="fas fa-map-marker-alt"></i> {place.distance || 0} km from Kathmandu
+            <i className="fas fa-map-marker-alt"></i> {place.distance || 0} km from Fikkal
           </Card.Text>
           <Button variant="primary" onClick={handleShow}>View Details</Button>
         </Card.Body>
@@ -34,7 +34,7 @@ function Place({ place }) {
           <Modal.Title>{place.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Carousel>
+          <Carousel interval={3000} controls indicators>
             {place.images && place.images.map((url, index) => (
               <Carousel.Item key={index}>
                 <img
@@ -49,7 +49,7 @@ function Place({ place }) {
           <div className="mt-3">
             <p>{place.description || 'No description available.'}</p>
             <p><strong>Location:</strong> {place.location || 'Location not specified'}</p>
-            <p><strong>Distance:</strong> {place.distance || 0} km from Kathmandu</p>
+            <p><strong>Distance:</strong> {place.distance || 0} km from Fikkal</p>
             <p><strong>Best Time to Visit:</strong> {place.bestTime || 'Not specified'}</p>
           </div>
         </Modal.Body>

@@ -1,1 +1,18 @@
- 
+.hero-section, .carousel, .carousel-inner, .places-screen > .container, .places-screen .container {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* If there is a default border-radius or overflow, you can also reset it if needed */
+.hero-section {
+  border-radius: 0 !important;
+  min-height: 600px;
+  height: 600px;
+}
+
+/* If carousel uses img tags, ensure they fill the height */
+.carousel-item img {
+  height: 600px;
+  object-fit: cover;
+  width: 100%;
+} 

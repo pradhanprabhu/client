@@ -50,4 +50,46 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.carousel-caption-text {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.carousel .carousel-control-prev,
+.carousel .carousel-control-next {
+  width: 10%;
+  opacity: 0.8;
+}
+
+.carousel .carousel-control-prev:hover,
+.carousel .carousel-control-next:hover {
+  opacity: 1;
+}
+
+.carousel .carousel-indicators {
+  margin-bottom: 1rem;
+}
+
+.carousel .carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.carousel .carousel-item {
+  transition: transform 0.6s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .carousel-caption-text {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
 } 

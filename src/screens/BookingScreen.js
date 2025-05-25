@@ -54,9 +54,10 @@ const BookingScreen = () => {
     // Check room availability when check-in date is selected
     if (name === 'checkIn') {
       try {
-        const response = await axios.get(`/api/rooms/${roomData._id}/availability?date=${value}`);
-        if (!response.data.available) {
-          setError('This room is already booked for the selected date. Please choose a different date.');
+        // Check availability for check-in date
+        const checkInResponse = await axios.get(`/api/rooms/${roomData._id}/availability?date=${value}`);
+        if (!checkInResponse.data.available) {
+          setError('This room is already booked for the selected check-in date. Please choose a different date.');
           return;
         }
       } catch (error) {
@@ -120,9 +121,30 @@ const BookingScreen = () => {
       return;
     }
 
-    if (checkIn < new Date()) {
+    // Compare dates without time component
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const checkInDate = new Date(bookingData.checkIn);
+    checkInDate.setHours(0, 0, 0, 0);
+
+    if (checkInDate < today) {
       setError('Check-in date cannot be in the past');
       return;
+    }
+
+    // Check if the room is available for today's date
+    if (checkInDate.getTime() === today.getTime()) {
+      try {
+        const checkInResponse = await axios.get(`/api/rooms/${roomData._id}/availability?date=${bookingData.checkIn}`);
+        if (!checkInResponse.data.available) {
+          setError('This room is not available for today. Please choose a different date.');
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking room availability:', error);
+        setError('Error checking room availability. Please try again.');
+        return;
+      }
     }
 
     try {
@@ -239,7 +261,7 @@ const BookingScreen = () => {
                       className={bookingData.guests > roomData.capacity ? 'is-invalid' : ''}
                     />
                     <span className="text-muted">
-                      / {roomData.maxcount}
+                      {roomData.maxcount}
                     </span>
                   </div>
                   {bookingData.guests > roomData.capacity ? (

@@ -83,15 +83,8 @@ function Navbar() {
                     to="/places" 
                     className={`nav-link-custom ${isActive("/places") ? "active-link" : ""}`}
                   >
-                    Places
+                    Places To Visit
                   </Nav.Link>
-                  {/* <Nav.Link 
-                    as={Link} 
-                    to="/terms" 
-                    className={`nav-link-custom ${isActive("/terms") ? "active-link" : ""}`}
-                  >
-                    Terms & Conditions
-                  </Nav.Link> */}
                 </>
               )}
               {!(userInfo && userInfo.isAdmin) && (
@@ -110,7 +103,9 @@ function Navbar() {
                   >
                     Contact Us
                   </Nav.Link>
+                  
                 </>
+                
               )}
               {userInfo && userInfo.isAdmin && (
                 <Nav.Link as={Link} to="/admin">

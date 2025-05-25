@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Table, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Card, Table, Button, Alert, Tabs, Tab } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
@@ -80,36 +80,24 @@ function UserBookingsScreen() {
     }
   };
 
-  if (loading) {
-    return (
-      <Container className="py-5">
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </Container>
-    );
-  }
-
-  return (
-    <Container className="py-5">
-      <h2 className="mb-4">My Bookings</h2>
-      
-      {error && <Alert variant="danger">{error}</Alert>}
-      
-      {bookings.length === 0 ? (
-        <Card>
+  const renderBookingTable = (filteredBookings) => {
+    if (filteredBookings.length === 0) {
+      return (
+        <Card className="no-bookings-card">
           <Card.Body className="text-center">
             <h4>No bookings found</h4>
-            <p>You haven't made any bookings yet.</p>
+            <p>You haven't made any bookings in this category yet.</p>
             <Button variant="primary" onClick={() => navigate('/rooms')}>
               Book a Room
             </Button>
           </Card.Body>
         </Card>
-      ) : (
-        <Table responsive striped bordered hover>
+      );
+    }
+
+    return (
+      <div className="booking-table-container">
+        <Table responsive striped bordered hover className="booking-table">
           <thead>
             <tr>
               <th>Room</th>
@@ -122,15 +110,15 @@ function UserBookingsScreen() {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking) => (
+            {filteredBookings.map((booking) => (
               <tr key={booking._id}>
                 <td>{booking.room?.name || 'Room not available'}</td>
                 <td>{moment(booking.checkIn).format('MMM DD, YYYY')}</td>
                 <td>{moment(booking.checkOut).format('MMM DD, YYYY')}</td>
                 <td>Rs. {booking.totalAmount}</td>
                 <td>
-                  <span className={`status-badge ${booking.status}`}>
-                    {booking.status === 'cancelled' ? 'Cancelled' : booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                  <span className={`status-badge ${booking.status === 'cancelled' ? 'cancelled' : booking.paymentMethod === 'mastercard' ? 'confirmed' : booking.status}`}>
+                    {booking.status === 'cancelled' ? 'Cancelled' : booking.paymentMethod === 'mastercard' ? 'Confirmed' : booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                   </span>
                 </td>
                 <td>
@@ -148,6 +136,7 @@ function UserBookingsScreen() {
                     size="sm"
                     onClick={() => handleCancelBooking(booking)}
                     disabled={booking.status === 'cancelled'}
+                    className="action-button"
                   >
                     Cancel
                   </Button>
@@ -156,7 +145,63 @@ function UserBookingsScreen() {
             ))}
           </tbody>
         </Table>
-      )}
+      </div>
+    );
+  };
+
+  if (loading) {
+    return (
+      <Container className="py-5">
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+
+  const pendingBookings = bookings.filter(booking => 
+    booking.status === 'pending'
+  );
+
+  const paidBookings = bookings.filter(booking => 
+    (booking.status === 'confirmed' || 
+     booking.paymentMethod === 'mastercard' || 
+     booking.paymentMethod === 'khalti') &&
+    booking.status !== 'cancelled'
+  );
+
+  const cancelledBookings = bookings.filter(booking => 
+    booking.status === 'cancelled'
+  );
+
+  return (
+    <Container className="py-5">
+      <h2 className="mb-4 text-center">My Bookings</h2>
+      
+      {error && <Alert variant="danger">{error}</Alert>}
+      
+      <Tabs defaultActiveKey="paid" className="mb-4 booking-tabs">
+        <Tab eventKey="paid" title={<span style={{color: 'black', fontWeight: 'bold'}}>Paid ({paidBookings.length})</span>}>
+          <div className="tab-content">
+            <h3 className="tab-title">Paid Bookings</h3>
+            {renderBookingTable(paidBookings)}
+          </div>
+        </Tab>
+        <Tab eventKey="pending" title={<span style={{color: 'black', fontWeight: 'bold'}}>Pending ({pendingBookings.length})</span>}>
+          <div className="tab-content">
+            <h3 className="tab-title">Pending Bookings</h3>
+            {renderBookingTable(pendingBookings)}
+          </div>
+        </Tab>
+        <Tab eventKey="cancelled" title={<span style={{color: 'black', fontWeight: 'bold'}}>Cancelled ({cancelledBookings.length})</span>}>
+          <div className="tab-content">
+            <h3 className="tab-title">Cancelled Bookings</h3>
+            {renderBookingTable(cancelledBookings)}
+          </div>
+        </Tab>
+      </Tabs>
     </Container>
   );
 }

@@ -73,7 +73,14 @@ function PlacesScreen() {
     
     if (filters.distanceRange !== 'Any Distance') {
       const [min, max] = filters.distanceRange.split('-').map(Number);
-      matches = matches && place.distance >= min && place.distance <= max;
+      const placeDistance = parseFloat(place.distance) || 0;
+      
+      if (max === 100) {
+        // For the "40+ km" option
+        matches = matches && placeDistance >= min;
+      } else {
+        matches = matches && placeDistance >= min && placeDistance <= max;
+      }
     }
     
     return matches;
@@ -85,23 +92,22 @@ function PlacesScreen() {
       {error && <div className="text-center text-danger">{error}</div>}
       {/* Hero Section */}
       <div className="hero-section" style={{
-        backgroundImage: `url('https://res.cloudinary.com/dpblvtdry/image/upload/v1744517873/ChatGPT_Image_Apr_13_2025_10_02_56_AM_fjo14p.png')`,
+        backgroundImage: `url('https://res.cloudinary.com/dpblvtdry/image/upload/v1747929824/yrwulfx9rimkkgjiv9js.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       }}>
         <div className="overlay"></div>
         <Container className="hero-content text-center text-white">
-          <h1 className="display-4">Our Places</h1>
-          <p className="lead">Discover the beauty of Nepal</p>
+          <h1 className="display-4">Discover the Beauty of Ilam</h1>
         </Container>
       </div>
 
       <Container className="py-5">
         <div className="section-header text-center mb-5">
-          <h2 className="display-5">Our Places</h2>
+          <h2 className="display-5">Best Places to Visit in Ilam</h2>
           <div className="header-line"></div>
-          <p className="lead text-muted">Explore amazing places to visit</p>
+          <p className="lead text-muted">Explore amazing places of Ilam</p>
           {filteredPlaces.length === 0 && !loading && (
             <p className="text-muted">No places found</p>
           )}
@@ -131,8 +137,7 @@ function PlacesScreen() {
               >
                 <option>All Types</option>
                 <option>Lake</option>
-                <option>Heritage</option>
-                <option>Mountain</option>
+                <option>Religious Site</option>
                 <option>Popular Places</option>
                 <option>Trekking Destination</option>
               </Form.Select>
@@ -147,11 +152,11 @@ function PlacesScreen() {
                 onChange={handleFilterChange}
               >
                 <option>Any Distance</option>
-                <option value="0-100">0 - 100 km</option>
-                <option value="101-200">101 - 200 km</option>
-                <option value="201-300">201 - 300 km</option>
-                <option value="301-500">300 - 400 km</option>
-                <option value="301-500">400+ km</option>
+                <option value="0-10">0 - 10 km</option>
+                <option value="10-20">10 - 20 km</option>
+                <option value="20-30">20 - 30 km</option>
+                <option value="30-40">30 - 40 km</option>
+                <option value="40-100">40+ km</option>
               </Form.Select>
             </Form.Group>
           </Col>

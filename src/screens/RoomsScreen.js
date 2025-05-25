@@ -134,8 +134,7 @@ function RoomsScreen() {
               >
                 <option>All Types</option>
                 <option>Deluxe</option>
-                <option>Standard</option>
-                <option>Suite</option>
+                <option>Non-Deluxe</option>
               </Form.Select>
             </Form.Group>
           </Col>

@@ -29,7 +29,7 @@ const Terms = () => {
 
               <section>
                 <h2>2. Booking and Reservations</h2>
-                <p>All bookings are subject to availability and confirmation. We reserve the right to refuse service to anyone for any reason at any time. A valid credit card is required to secure your reservation.</p>
+                <p>All bookings are subject to availability and confirmation. We reserve the right to refuse service to anyone for any reason at any time.</p>
               </section>
 
               <section>
@@ -39,7 +39,7 @@ const Terms = () => {
 
               <section>
                 <h2>4. Payment Terms</h2>
-                <p>Full payment is required at check-in unless otherwise arranged. We accept major credit cards, cash, and bank transfers. All prices are subject to applicable taxes and service charges.</p>
+                <p>Full payment is required at check-in unless otherwise arranged. We accept major mastercard, cash, and khalti. All prices are subject to applicable taxes and service charges.</p>
               </section>
 
               <section>
@@ -74,7 +74,7 @@ const Terms = () => {
             </div>
 
             <div className="terms-footer">
-              <p>Last updated: March 2024</p>
+              <p>Last updated: 2025</p>
             </div>
           </Col>
         </Row>

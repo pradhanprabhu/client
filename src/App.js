@@ -31,7 +31,6 @@ import PaymentSuccess from './screens/PaymentSuccess';
 import PaymentFailure from './screens/PaymentFailure';
 import AdminPayments from './screens/AdminPayments';
 import PaymentVerificationScreen from './screens/PaymentVerificationScreen';
-
 import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -113,7 +112,7 @@ function AppContent() {
                   <Route path="/bookings" element={<UserBookingsScreen />} />
                   <Route path="/payment-success" element={<PaymentSuccess />} />
                   <Route path="/payment-failure" element={<PaymentFailure />} />
-                  <Route path="/payment/verify" element={<PaymentVerificationScreen />} />
+                  <Route path="/khalti/verify" element={<PaymentVerificationScreen />} />
                 </Routes>
               </main>
               <Footer />

@@ -1,13 +1,16 @@
-.home-screen {
+ .home-screen {
   min-height: 100vh;
-}
+} 
+
 
 .hero-section {
-  height: 100vh;
+  height: 110vh;
   background: url('https://files.oaiusercontent.com/file-1Tw9xi6TrcPXsaQCmnTEj7?se=2025-03-19T10%3A39%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D428241b0-6dbd-4737-a992-edd91ab57d04.webp&sig=/8SDAhv5iSSsyzj0S/LEarLpYNdft7M9gi9cPg8LV4I%3D') center/cover no-repeat;
   position: relative;
   display: flex;
   align-items: center;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .hero-carousel {
@@ -50,6 +53,7 @@
   margin: 0;
   max-width: 800px;
   margin: 0 auto;
+  background: transparent !important;
 }
 
 .carousel-caption h1 {
@@ -156,12 +160,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent !important;
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
+  background: transparent !important;
 }
 
 .hero-content h1 {

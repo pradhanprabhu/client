@@ -8,17 +8,17 @@ const Homescreen = () => {
     {
       image: 'https://res.cloudinary.com/dpblvtdry/image/upload/v1744517422/ChatGPT_Image_Apr_13_2025_09_55_28_AM_rnisux.png',
       title: 'Welcome to Nepalese Hotel',
-      description: 'Experience luxury and comfort in the heart of Nepal'
+      description: 'Experience Luxury and Comfort in The Heart of Ilam'
     },
     {
       image: 'https://res.cloudinary.com/dpblvtdry/image/upload/v1744517328/ChatGPT_Image_Apr_13_2025_09_53_50_AM_acdcox.png',
       title: 'Luxurious Accommodations',
-      description: 'Choose from our selection of premium rooms and suites'
+      description: 'Choose From Our Selection of Premium Rooms and Suites'
     },
     {
-      image: 'https://res.cloudinary.com/dpblvtdry/image/upload/v1744517873/ChatGPT_Image_Apr_13_2025_10_02_56_AM_fjo14p.png',
-      title: 'Explore Nepal',
-      description: 'Discover the beauty and culture of Nepal'
+      image: 'https://res.cloudinary.com/dpblvtdry/image/upload/v1747930374/ghxn57kxfbfry7mruj2g.jpg',
+      title: 'Explore Ilam',
+      description: 'Discover the Beauty and Culture of Ilam'
     }
   ];
 
@@ -34,9 +34,7 @@ const Homescreen = () => {
             <Carousel.Caption>
               <h1>{item.title}</h1>
               <p>{item.description}</p>
-              <Link to="/rooms">
-                <Button variant="warning" size="lg">View Rooms</Button>
-              </Link>
+              
             </Carousel.Caption>
           </Carousel.Item>
         ))}
@@ -60,8 +58,8 @@ const Homescreen = () => {
                 <div className="feature-icon">
                   <i className="fas fa-spa"></i>
                 </div>
-                <h3>Luxury Spa</h3>
-                <p>Rejuvenate your body and mind</p>
+                <h3>Good Hospitality</h3>
+                <p>Warm, attentive service and a welcoming atmosphere for every guest</p>
               </div>
             </Col>
             <Col md={4} className="mb-4">

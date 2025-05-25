@@ -33,6 +33,7 @@ export default function VerificationScreen() {
       await axios.post('/api/users/resend-verification', { email });
       setResendStatus('Verification code resent. Please check your email.');
     } catch (err) {
+      console.error('Resend verification error:', err);
       setResendStatus('Failed to resend. Please try again.');
     }
   }
@@ -63,6 +64,16 @@ export default function VerificationScreen() {
         {status === 'failed' && (
           <div className="verification-failure">❌ Verification failed. Please try again.</div>
         )}
+
+        <div className="resend-container">
+          <button 
+            onClick={handleResendVerification}
+            className="resend-link"
+            disabled={resendStatus === 'Resending...'}
+          >
+            {resendStatus || 'Resend verification code'}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -8,26 +8,30 @@ function PaymentVerificationScreen() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const verifyPayment = async () => {
       try {
         const pidx = searchParams.get('pidx');
-        if (!pidx) throw new Error('Payment ID not found');
+        const status = searchParams.get('status');
+        const purchase_order_id = searchParams.get('purchase_order_id');
 
-        // Parse userInfo and extract token correctly
-        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-        const token = userInfo.token;
-        console.log('JWT token being sent:', token);
-        if (!token) {
-          setError('You must be logged in to verify payment.');
-          setLoading(false);
-          return;
+        if (!pidx || !status || !purchase_order_id) {
+          throw new Error('Invalid payment response');
         }
 
+        // Get user token
+        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+        const token = userInfo.token;
+        if (!token) {
+          throw new Error('You must be logged in to verify payment');
+        }
+
+        console.log('Verifying payment with params:', { pidx, status, purchase_order_id });
+
+        // Verify payment with backend
         const response = await axios.get(
-          `http://localhost:5000/api/payments/khalti/verify?pidx=${pidx}`,
+          `http://localhost:5000/api/payments/khalti/verify?pidx=${pidx}&status=${status}&purchase_order_id=${purchase_order_id}`,
           {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -36,13 +40,15 @@ function PaymentVerificationScreen() {
           }
         );
 
+        console.log('Payment verification response:', response.data);
+
         if (response.data.success) {
-          setSuccess(true);
+          // Payment verified successfully
           setTimeout(() => {
             navigate('/bookings');
           }, 2000);
         } else {
-          throw new Error('Payment verification failed');
+          throw new Error(response.data.message || 'Payment verification failed');
         }
       } catch (error) {
         console.error('Payment verification error:', error);
@@ -82,12 +88,12 @@ function PaymentVerificationScreen() {
             </button>
           </div>
         </Alert>
-      ) : success ? (
+      ) : (
         <Alert variant="success">
           <Alert.Heading>Payment Successful!</Alert.Heading>
           <p>Your payment has been verified successfully. Redirecting to your bookings...</p>
         </Alert>
-      ) : null}
+      )}
     </Container>
   );
 }

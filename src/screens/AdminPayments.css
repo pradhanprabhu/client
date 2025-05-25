@@ -47,6 +47,16 @@
   font-weight: 500;
 }
 
+.badge.bg-purple {
+  background-color: #6f42c1 !important;
+  color: white;
+}
+
+.badge.bg-dark-green {
+  background-color: #1b5e20 !important;
+  color: white;
+}
+
 .btn-sm {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;

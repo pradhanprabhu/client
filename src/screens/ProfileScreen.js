@@ -55,9 +55,9 @@ function ProfileScreen() {
           name: data.data.name,
           email: data.data.email,
           phone: data.data.phone,
-          profilePicture: data.data.profilePicture || ''
+          profilePicture: data.data.imageUrl || ''
         });
-        setImagePreview(data.data.profilePicture || '');
+        setImagePreview(data.data.imageUrl || '');
       } catch (error) {
         if (error.response) {
           setError(`Error: ${error.response.status} - ${error.response.data?.message || 'Failed to fetch user data'}`);
@@ -185,7 +185,7 @@ function ProfileScreen() {
     if (
       formData.name === userInfo.name &&
       formData.phone === userInfo.phone &&
-      formData.profilePicture === userInfo.profilePicture
+      formData.profilePicture === userInfo.imageUrl
     ) {
       setError('No changes were made to update');
       return;
@@ -204,7 +204,7 @@ function ProfileScreen() {
       const updateData = {
         name: formData.name,
         phone: formData.phone,
-        profilePicture: formData.profilePicture,
+        image: formData.profilePicture,
         updatePassword: false
       };
 
@@ -215,7 +215,7 @@ function ProfileScreen() {
           ...storedUserInfo,
           name: response.data.data.name,
           phone: response.data.data.phone,
-          profilePicture: response.data.data.profilePicture
+          profilePicture: response.data.data.imageUrl
         };
         localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
 
@@ -224,9 +224,9 @@ function ProfileScreen() {
           name: response.data.data.name,
           email: response.data.data.email,
           phone: response.data.data.phone,
-          profilePicture: response.data.data.profilePicture
+          profilePicture: response.data.data.imageUrl
         });
-        setImagePreview(response.data.data.profilePicture);
+        setImagePreview(response.data.data.imageUrl);
         setSuccess('Profile updated successfully');
         setIsEditing(false);
       } else {
@@ -327,9 +327,9 @@ function ProfileScreen() {
                               name: userInfo.name,
                               email: userInfo.email,
                               phone: userInfo.phone,
-                              profilePicture: userInfo.profilePicture
+                              profilePicture: userInfo.imageUrl
                             });
-                            setImagePreview(userInfo.profilePicture);
+                            setImagePreview(userInfo.imageUrl);
                           }}
                         >
                           Cancel

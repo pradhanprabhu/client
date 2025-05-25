@@ -10,6 +10,7 @@ const AdminRooms = () => {
   const [rooms, setRooms] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
+  const [searchName, setSearchName] = useState("");
   const [formData, setFormData] = useState({
     name: '',
     type: '',
@@ -19,6 +20,12 @@ const AdminRooms = () => {
     amenities: '',
     availability: true
   });
+
+  // Add room types array
+  const roomTypes = [
+    'Deluxe',
+    'Non-Deluxe'
+  ];
 
   const [errors, setErrors] = useState({
     price: '',
@@ -215,6 +222,11 @@ const AdminRooms = () => {
     setShowModal(true);
   };
 
+  // Filter rooms by name
+  const filteredRooms = rooms.filter(room =>
+    room.name?.toLowerCase().includes(searchName.toLowerCase())
+  );
+
   return (
     <Container className="admin-rooms-container">
       <div className="admin-rooms-header">
@@ -224,6 +236,17 @@ const AdminRooms = () => {
             <FaPlus className="me-2" /> Add New Room
           </Button>
         </div>
+      </div>
+
+      <div className="mb-3 d-flex gap-2 align-items-center">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search by name"
+          value={searchName}
+          onChange={e => setSearchName(e.target.value)}
+          style={{ maxWidth: 200 }}
+        />
       </div>
 
       <Table striped bordered hover responsive>
@@ -240,7 +263,7 @@ const AdminRooms = () => {
           </tr>
         </thead>
         <tbody>
-          {rooms.map(room => (
+          {filteredRooms.map(room => (
             <tr key={room._id}>
               <td>{room.name}</td>
               <td>{room.type}</td>
@@ -299,13 +322,19 @@ const AdminRooms = () => {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Room Type</Form.Label>
-                  <Form.Control
-                    type="text"
+                  <Form.Select
                     name="type"
                     value={formData.type}
                     onChange={handleInputChange}
                     required
-                  />
+                  >
+                    <option value="">Select Room Type</option>
+                    {roomTypes.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
             </Row>

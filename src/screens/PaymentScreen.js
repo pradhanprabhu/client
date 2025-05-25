@@ -127,9 +127,22 @@ function PaymentScreen() {
     setError('');
 
     try {
-      if (!bookingData || !bookingData.room || !bookingData.room._id) {
-        throw new Error('Invalid booking data');
+      // Check room availability before proceeding with payment
+      const availabilityResponse = await axios.get(`/api/rooms/${bookingData.room._id}/availability?date=${bookingData.checkIn}`);
+      if (!availabilityResponse.data.available) {
+        setError('This room is no longer available for the selected dates. Please choose a different room or dates.');
+        setLoading(false);
+        return;
       }
+
+      console.log('Creating booking with data:', {
+        room: bookingData.room._id,
+        checkIn: bookingData.checkIn,
+        checkOut: bookingData.checkOut,
+        totalAmount: Number(bookingData.totalAmount),
+        totalDays: Number(bookingData.totalDays),
+        guests: Number(bookingData.guests)
+      });
 
       // Create booking first
       const bookingResponse = await axios.post('http://localhost:5000/api/bookings', {
@@ -140,12 +153,7 @@ function PaymentScreen() {
         totalDays: Number(bookingData.totalDays),
         guests: Number(bookingData.guests),
         paymentMethod: 'mastercard',
-        status: 'confirmed',
-        paymentDetails: {
-          cardNumber: paymentDetails.cardNumber,
-          cardHolder: paymentDetails.cardHolder,
-          expiryDate: paymentDetails.expiryDate
-        }
+        status: 'pending'
       }, {
         headers: {
           'Authorization': `Bearer ${userInfo.token}`,
@@ -153,21 +161,32 @@ function PaymentScreen() {
         }
       });
 
+      console.log('Booking created successfully:', bookingResponse.data);
+
       if (bookingResponse.data) {
-        setSuccess('Payment successful! Redirecting to your bookings...');
-        setTimeout(() => {
-          navigate('/bookings');
-        }, 1500);
-      } else {
-        throw new Error('Invalid response from server');
+        // Create payment with booking reference
+        const paymentResponse = await axios.post('http://localhost:5000/api/payments', {
+          bookingId: bookingResponse.data._id,
+          amount: Number(bookingData.totalAmount),
+          paymentMethod: 'mastercard',
+          paymentDetails: paymentDetails
+        }, {
+          headers: {
+            'Authorization': `Bearer ${userInfo.token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (paymentResponse.data) {
+          setSuccess('Payment successful! Redirecting to bookings...');
+          setTimeout(() => {
+            navigate('/bookings');
+          }, 2000);
+        }
       }
     } catch (error) {
       console.error('Mastercard payment error:', error);
-      const errorMessage = error.response?.data?.details || 
-                          error.response?.data?.message || 
-                          error.message || 
-                          'Payment failed. Please try again.';
-      setError(errorMessage);
+      setError(error.response?.data?.message || 'Payment failed. Please try again.');
     } finally {
       setLoading(false);
     }

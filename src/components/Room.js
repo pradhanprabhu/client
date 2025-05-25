@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import RoomDetailsModal from './RoomDetailsModal';
 import './Room.css';
 
 function Room({ room }) {
   const [showModal, setShowModal] = useState(false);
+  const [showLoginMessage, setShowLoginMessage] = useState(false);
   const navigate = useNavigate();
 
   const handleShow = () => setShowModal(true);
@@ -14,9 +15,14 @@ function Room({ room }) {
   const handleBookNow = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     if (!userInfo) {
-      // Store the current room ID in localStorage to redirect back after login
-      localStorage.setItem('bookingRoomId', room._id);
-      navigate('/login');
+      setShowLoginMessage(true);
+      // Hide the message after 3 seconds
+      setTimeout(() => {
+        setShowLoginMessage(false);
+        // Store the current room ID in localStorage to redirect back after login
+        localStorage.setItem('bookingRoomId', room._id);
+        navigate('/login');
+      }, 3000);
     } else {
       // If user is logged in, navigate directly to booking page with room data
       navigate(`/book/${room._id}`, { state: { room } });
@@ -67,6 +73,12 @@ function Room({ room }) {
           handleClose={handleClose} 
           room={room}
         />
+      )}
+
+      {showLoginMessage && (
+        <Alert variant="warning" className="mt-3">
+          You need to log in to book this room. Redirecting to login page...
+        </Alert>
       )}
     </>
   );

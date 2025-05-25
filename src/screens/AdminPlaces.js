@@ -8,6 +8,8 @@ const AdminPlaces = () => {
   const [places, setPlaces] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingPlace, setEditingPlace] = useState(null);
+  const [searchName, setSearchName] = useState("");
+  const [searchCategory, setSearchCategory] = useState("");
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -158,6 +160,12 @@ const AdminPlaces = () => {
     setFormData({ ...formData, images: updatedImages });
   };
 
+  // Filter places by name and category
+  const filteredPlaces = places.filter(place =>
+    place.name?.toLowerCase().includes(searchName.toLowerCase()) &&
+    (searchCategory === "" || place.category === searchCategory)
+  );
+
   return (
     <Container className="admin-places-container">
       <div className="admin-places-header">
@@ -167,6 +175,28 @@ const AdminPlaces = () => {
             <FaPlus className="me-2" /> Add New Place
           </Button>
         </div>
+      </div>
+
+      <div className="mb-3 d-flex gap-2 align-items-center">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search by name"
+          value={searchName}
+          onChange={e => setSearchName(e.target.value)}
+          style={{ maxWidth: 200 }}
+        />
+        <Form.Select
+          value={searchCategory}
+          onChange={e => setSearchCategory(e.target.value)}
+          style={{ maxWidth: 200 }}
+        >
+          <option value="">All Categories</option>
+          <option value="Religious Site">Religious Site</option>
+          <option value="Trekking Destination">Trekking Destination</option>
+          <option value="Lake">Lake</option>
+          <option value="Popular Places">Popular Places</option>
+        </Form.Select>
       </div>
 
       <Table striped bordered hover responsive>
@@ -182,7 +212,7 @@ const AdminPlaces = () => {
           </tr>
         </thead>
         <tbody>
-          {places.map(place => (
+          {filteredPlaces.map(place => (
             <tr key={place._id}>
               <td>{place.name}</td>
               <td>{place.category}</td>
@@ -225,14 +255,18 @@ const AdminPlaces = () => {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Category</Form.Label>
-                  <Form.Control
-                    type="text"
+                  <Form.Select
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
                     required
-                    placeholder="e.g., Historical, Nature, Cultural"
-                  />
+                  >
+                    <option value="">Select Place Type</option>
+                    <option value="Religious Site">Religious Site</option>
+                    <option value="Trekking Destination">Trekking Destination</option>
+                    <option value="Lake">Lake</option>
+                    <option value="Popular Places">Popular Places</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
             </Row>

@@ -152,7 +152,7 @@ const ContactUs = () => {
           <div className="card">
             <div className="card-body p-0">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.456837428456!2d85.30924877645615!3d27.71715737678937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190a74aa1cd1%3A0x971b10f7ef9e6996!2sThamel%2C%20Kathmandu%2044600%2C%20Nepal!5e0!3m2!1sen!2s!4v1709654321!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3540.123456789012!2d87.92712345678901!3d26.98765432109876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef6b7a8f5c5c5c%3A0x1234567890abcdef!2sFikkal%2C%20Ilam%2C%20Nepal!5e0!3m2!1sen!2s!4v1709654321!5m2!1sen!2s"
                 width="100%"
                 height="450"
                 style={{ border: 0 }}
